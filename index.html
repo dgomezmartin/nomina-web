@@ -52,6 +52,7 @@
     .lead {
       color: var(--muted);
       margin-bottom: 18px;
+      line-height: 1.6;
     }
 
     .subsection { margin-top: 18px; }
@@ -342,7 +343,7 @@
   <div class="container">
     <div class="tabs">
       <button class="tab-btn active" data-tab="simulador">Simulador</button>
-      <button class="tab-btn" data-tab="previa">Apuntes de clase</button>
+      <button class="tab-btn" data-tab="previa">Teoría nóminas</button>
     </div>
 
     <div class="tab-panel active" id="tab-simulador">
@@ -625,16 +626,174 @@
 
     <div class="tab-panel" id="tab-previa">
       <div class="panel">
-        <h1>Apuntes de clase: la nómina</h1>
-        <p class="lead">Este apartado está pensado para estudiar y entender la nómina antes de hacer ejercicios.</p>
+        <h1>Teoría nóminas</h1>
+        <p class="lead">Este apartado está pensado para estudiar y entender la nómina antes de hacer ejercicios. La idea es que el alumno pueda leer estos apuntes y, con ellos, identificar cada bloque de la nómina, entender qué significa cada concepto y saber cómo se relacionan entre sí.</p>
 
         <div class="info-grid">
-          <div class="info-card"><h3>Qué es una nómina</h3><p>La nómina es el documento que justifica el pago del salario y refleja cantidades devengadas, descuentos y líquido final.</p></div>
-          <div class="info-card"><h3>Encabezado</h3><p>En una nómina real aparecen datos de empresa, CIF, CCC, trabajador, NIF, afiliación, categoría, grupo de cotización y periodo de liquidación.</p></div>
-          <div class="info-card"><h3>Devengos</h3><p>Son todas las cantidades a favor del trabajador, tanto salariales como no salariales.</p></div>
-          <div class="info-card"><h3>Deducciones</h3><p>Son los descuentos aplicados al total devengado: Seguridad Social, IRPF y otras posibles deducciones.</p></div>
-          <div class="info-card"><h3>Total devengado</h3><p>Es la suma de todos los conceptos cobrados antes de restar deducciones.</p></div>
-          <div class="info-card"><h3>Líquido a percibir</h3><p>Es la cantidad final que recibe la persona trabajadora después de restar las deducciones.</p></div>
+          <div class="info-card" style="background:#eef6ff; border-color:#cfe0ff;">
+            <h3>Qué es una nómina</h3>
+            <p>La nómina es el documento que justifica el pago del salario. En ella aparecen los datos de la empresa y de la persona trabajadora, el periodo al que corresponde el pago, las cantidades que se cobran y las cantidades que se descuentan. Su finalidad es mostrar de forma ordenada cómo se pasa del salario bruto al salario neto.</p>
+            <p style="margin-top:8px;">En otras palabras, la nómina permite responder a tres preguntas: qué se ha generado, qué se ha descontado y cuánto se cobra finalmente.</p>
+          </div>
+
+          <div class="info-card" style="background:#eefcf3; border-color:#c8ebd4;">
+            <h3>Partes principales de una nómina</h3>
+            <p>Una nómina suele organizarse en cuatro grandes bloques: encabezado, devengos, deducciones y resumen final. En el encabezado se identifican empresa, trabajador y periodo. En los devengos aparecen las cantidades a favor del trabajador. En las deducciones figuran los descuentos. En el resumen final se indica el total devengado, el total deducido y el líquido a percibir.</p>
+          </div>
+
+          <div class="info-card" style="background:#fff8eb; border-color:#f3d59b;">
+            <h3>Encabezado</h3>
+            <p>El encabezado identifica a las partes y sitúa la nómina en un periodo concreto. Aquí suelen figurar la empresa, el trabajador, la categoría, el grupo profesional, el periodo de liquidación y el número de días liquidados. En una nómina más completa también aparecen datos como CIF, código cuenta de cotización, NIF, número de afiliación y grupo de cotización. Este bloque no se usa para calcular importes, pero es imprescindible para saber a quién corresponde la nómina y en qué contexto.</p>
+          </div>
+
+          <div class="info-card" style="background:#fff1f3; border-color:#f2c2cb;">
+            <h3>Periodo de liquidación</h3>
+            <p>Es el intervalo de tiempo al que corresponde la nómina. Lo normal es que sea mensual, aunque también puede haber liquidaciones por menos días si el contrato comienza o termina dentro del mes. Los días liquidados ayudan a entender cómo se calcula la cantidad total del periodo.</p>
+            <p style="margin-top:8px;">Ejemplo: del 1 al 30 de abril, 30 días.</p>
+          </div>
+
+          <div class="info-card" style="background:#eef6ff; border-color:#cfe0ff;">
+            <h3>Devengos</h3>
+            <p>Los devengos son todas las cantidades que la persona trabajadora genera a su favor durante el periodo. Aquí se suman tanto las percepciones salariales como, en su caso, las no salariales. El total de este bloque recibe el nombre de <strong>total devengado</strong> y representa el salario bruto del periodo en el sentido más amplio del documento.</p>
+          </div>
+
+          <div class="info-card" style="background:#eef6ff; border-color:#cfe0ff;">
+            <h3>Percepciones salariales</h3>
+            <p>Son las cantidades que retribuyen directamente el trabajo realizado. Forman parte del salario propiamente dicho. En esta categoría se encuentran, entre otros, el salario base, los complementos, la antigüedad, las horas extraordinarias y la prorrata de pagas extraordinarias.</p>
+          </div>
+
+          <div class="info-card" style="background:#eef6ff; border-color:#cfe0ff;">
+            <h3>Salario base</h3>
+            <p>Es la cantidad principal que se paga por el trabajo realizado. Suele fijarse en el contrato o en el convenio colectivo. Es el núcleo de la retribución y, sobre él, pueden añadirse otros complementos.</p>
+            <p style="margin-top:8px;">Ejemplo: 1.400 € mensuales.</p>
+          </div>
+
+          <div class="info-card" style="background:#eef6ff; border-color:#cfe0ff;">
+            <h3>Plus convenio</h3>
+            <p>Es un complemento salarial previsto en el convenio colectivo. Su existencia y cuantía dependen del sector, del grupo profesional o del puesto de trabajo. Aunque se llame “plus”, a efectos de estudio debe entenderse como una cantidad salarial que se suma al salario base.</p>
+          </div>
+
+          <div class="info-card" style="background:#eef6ff; border-color:#cfe0ff;">
+            <h3>Complementos salariales</h3>
+            <p>Son cantidades que se añaden al salario base para retribuir circunstancias concretas. Pueden deberse al puesto de trabajo, a la calidad o cantidad de trabajo, a la productividad, a la responsabilidad, a la peligrosidad o a otras situaciones previstas en convenio o contrato.</p>
+            <p style="margin-top:8px;">Ejemplo: un complemento de productividad o un plus de responsabilidad.</p>
+          </div>
+
+          <div class="info-card" style="background:#eef6ff; border-color:#cfe0ff;">
+            <h3>Antigüedad</h3>
+            <p>Es un complemento que retribuye el tiempo que la persona trabajadora lleva prestando servicios en la empresa, cuando así lo establece la normativa aplicable. En ejercicios de clase suele aparecer como una cantidad fija que se suma a otros conceptos salariales.</p>
+          </div>
+
+          <div class="info-card" style="background:#eef6ff; border-color:#cfe0ff;">
+            <h3>Horas extraordinarias</h3>
+            <p>Son horas trabajadas por encima de la jornada ordinaria. Se abonan aparte y pueden tener un tratamiento específico en la cotización. En la nómina suelen figurar separadas para que se diferencien claramente del resto del salario ordinario.</p>
+          </div>
+
+          <div class="info-card" style="background:#eef6ff; border-color:#cfe0ff;">
+            <h3>Pagas extraordinarias y prorrata</h3>
+            <p>Las pagas extraordinarias son retribuciones adicionales que se cobran en determinados momentos del año, normalmente verano y Navidad. Cuando en lugar de cobrarse aparte se reparten entre los doce meses, aparece la <strong>prorrata de pagas extra</strong>. En ese caso, cada nómina mensual incluye una parte proporcional de esas pagas.</p>
+          </div>
+
+          <div class="info-card" style="background:#eefcf3; border-color:#c8ebd4;">
+            <h3>Percepciones no salariales</h3>
+            <p>Son cantidades que no retribuyen directamente el trabajo, sino que compensan gastos o situaciones relacionadas con la prestación laboral. En ejercicios didácticos suelen aparecer como plus transporte, dietas u otros conceptos similares. Aunque se suman en la nómina, es importante distinguirlas de las percepciones salariales.</p>
+          </div>
+
+          <div class="info-card" style="background:#eefcf3; border-color:#c8ebd4;">
+            <h3>Plus transporte</h3>
+            <p>Es una cantidad que se utiliza para compensar gastos de desplazamiento o transporte. En la práctica académica se suele presentar como percepción no salarial, para que el alumno aprenda a diferenciar conceptos.</p>
+          </div>
+
+          <div class="info-card" style="background:#eefcf3; border-color:#c8ebd4;">
+            <h3>Dietas</h3>
+            <p>Las dietas compensan gastos de manutención o estancia derivados de la actividad laboral. En ejercicios de nómina se incluyen para trabajar la distinción entre conceptos salariales y no salariales.</p>
+          </div>
+
+          <div class="info-card" style="background:#fff8eb; border-color:#f3d59b;">
+            <h3>Total devengado</h3>
+            <p>Es la suma de todas las percepciones del periodo: salariales y no salariales. Se calcula antes de aplicar deducciones. Es una cifra muy importante porque representa todo lo que aparece a favor del trabajador antes de restar descuentos.</p>
+            <p style="margin-top:8px;"><strong>Esquema:</strong> total devengado = percepciones salariales + percepciones no salariales.</p>
+          </div>
+
+          <div class="info-card" style="background:#fff1f3; border-color:#f2c2cb;">
+            <h3>Deducciones</h3>
+            <p>Las deducciones son cantidades que se restan del total devengado. Aquí aparecen las cotizaciones del trabajador a la Seguridad Social, la retención de IRPF y cualquier otra minoración que el supuesto incluya. Su suma forma el <strong>total deducciones</strong>.</p>
+          </div>
+
+          <div class="info-card" style="background:#fff1f3; border-color:#f2c2cb;">
+            <h3>Contingencias comunes</h3>
+            <p>Es una cotización que contribuye a cubrir situaciones como enfermedad común, incapacidad no profesional o jubilación. En los ejercicios de nómina se aplica un porcentaje sobre la base correspondiente. El alumno debe aprender que este concepto se descuenta al trabajador y también tiene una aportación empresarial distinta.</p>
+          </div>
+
+          <div class="info-card" style="background:#fff1f3; border-color:#f2c2cb;">
+            <h3>Desempleo</h3>
+            <p>Es la cotización relacionada con la protección por desempleo. También se calcula aplicando un porcentaje sobre una base determinada. En ejercicios didácticos puede cambiar según el tipo de contrato planteado.</p>
+          </div>
+
+          <div class="info-card" style="background:#fff1f3; border-color:#f2c2cb;">
+            <h3>Formación profesional</h3>
+            <p>Es una cotización pequeña destinada al sistema de formación profesional. Aunque la cuantía sea reducida, debe aparecer separada en la nómina para que el alumno identifique correctamente cada deducción.</p>
+          </div>
+
+          <div class="info-card" style="background:#fff1f3; border-color:#f2c2cb;">
+            <h3>IRPF</h3>
+            <p>El IRPF es la retención a cuenta del Impuesto sobre la Renta de las Personas Físicas. En la nómina aparece como un porcentaje que se aplica sobre una base de retención. Ese porcentaje no es igual para todo el mundo: depende de factores personales y económicos, como el salario anual, la situación familiar, el número de hijos, el tipo de contrato o la existencia de discapacidad.</p>
+            <p style="margin-top:8px;">En clase conviene distinguir dos ideas: una cosa son los <strong>tramos generales del impuesto</strong> y otra el <strong>tipo de retención de la nómina</strong>, que se calcula de forma individualizada y no sale solo de mirar una tabla. Para fines didácticos, muchos ejercicios proporcionan directamente el porcentaje de retención.</p>
+          </div>
+
+          <div class="info-card" style="grid-column: 1 / -1; background:#fff1f3; border-color:#f2c2cb;">
+            <h3>Tabla orientativa de tramos generales del IRPF</h3>
+            <p>Esta tabla sirve para estudiar el impuesto y entender que el IRPF funciona por tramos. No debe confundirse con el porcentaje exacto de retención de una nómina concreta, que la Agencia Tributaria calcula atendiendo a las circunstancias personales y económicas del trabajador.</p>
+            <div class="table-wrap" style="margin-top:10px;">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Base liquidable general</th>
+                    <th class="num">Tipo orientativo</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td>Hasta 12.450 €</td><td class="num">19 %</td></tr>
+                  <tr><td>De 12.450 € a 20.200 €</td><td class="num">24 %</td></tr>
+                  <tr><td>De 20.200 € a 35.200 €</td><td class="num">30 %</td></tr>
+                  <tr><td>De 35.200 € a 60.000 €</td><td class="num">37 %</td></tr>
+                  <tr><td>De 60.000 € a 300.000 €</td><td class="num">45 %</td></tr>
+                  <tr><td>Más de 300.000 €</td><td class="num">47 %</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="info-card" style="background:#fff1f3; border-color:#f2c2cb;">
+            <h3>Otras deducciones</h3>
+            <p>En esta casilla pueden incluirse anticipos, embargos, devoluciones o cualquier otro descuento adicional que el ejercicio quiera contemplar. Su utilidad en clase es mostrar que no todo descuento pertenece necesariamente a Seguridad Social o IRPF.</p>
+          </div>
+
+          <div class="info-card" style="background:#eef6ff; border-color:#cfe0ff;">
+            <h3>Base IRPF</h3>
+            <p>La base IRPF es el importe sobre el que se aplica el porcentaje de retención en el simulador. Comprender esta base es importante porque ayuda a separar dos pasos distintos: primero determinar la base y después aplicar el tipo de retención correspondiente.</p>
+          </div>
+
+          <div class="info-card" style="background:#eef6ff; border-color:#cfe0ff;">
+            <h3>Aportación de la empresa</h3>
+            <p>Además de lo que se descuenta al trabajador, la empresa realiza sus propias cotizaciones. Esta parte no se resta del salario del trabajador, pero forma parte del coste laboral total. Por eso es muy útil que el alumno aprenda a diferenciar entre lo que paga el trabajador y lo que paga la empresa.</p>
+          </div>
+
+          <div class="info-card" style="background:#eefcf3; border-color:#c8ebd4;">
+            <h3>Total deducciones</h3>
+            <p>Es la suma de todos los descuentos aplicados al trabajador. Sale de añadir contingencias comunes, desempleo, formación profesional, IRPF, cotización por horas extra si existe, y otras deducciones.</p>
+          </div>
+
+          <div class="info-card" style="background:#eefcf3; border-color:#c8ebd4;">
+            <h3>Líquido a percibir</h3>
+            <p>Es la cantidad final que realmente recibe la persona trabajadora. Es el dato más buscado por el alumno cuando termina el ejercicio, pero para llegar a él primero hay que identificar bien los devengos, después calcular correctamente las deducciones y, por último, restarlas del total devengado.</p>
+            <p style="margin-top:8px;"><strong>Esquema final:</strong> líquido a percibir = total devengado − total deducciones.</p>
+          </div>
+
+          <div class="info-card" style="grid-column: 1 / -1; background:#eef6ff; border-color:#cfe0ff;">
+            <h3>Método recomendado para hacer una nómina en clase</h3>
+            <p>1. Leer el supuesto y localizar datos de empresa, trabajador y periodo. 2. Clasificar los conceptos entre salariales y no salariales. 3. Sumar todos los devengos. 4. Determinar las bases necesarias. 5. Aplicar los porcentajes de deducción. 6. Sumar las deducciones. 7. Restar deducciones al total devengado para obtener el líquido. 8. Revisar si el ejercicio pide también la aportación de la empresa.</p>
+          </div>
         </div>
       </div>
     </div>
