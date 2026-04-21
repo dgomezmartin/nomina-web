@@ -42,9 +42,7 @@
       margin-bottom: 20px;
     }
 
-    h1, h2, h3 {
-      margin-top: 0;
-    }
+    h1, h2, h3 { margin-top: 0; }
 
     h1 {
       font-size: 1.9rem;
@@ -56,9 +54,7 @@
       margin-bottom: 18px;
     }
 
-    .subsection {
-      margin-top: 18px;
-    }
+    .subsection { margin-top: 18px; }
 
     .subsection h3 {
       font-size: 1rem;
@@ -196,6 +192,7 @@
       padding: 10px 12px;
       border-bottom: 1px solid var(--line);
       text-align: left;
+      vertical-align: top;
     }
 
     th {
@@ -246,13 +243,8 @@
       border-color: transparent;
     }
 
-    .tab-panel {
-      display: none;
-    }
-
-    .tab-panel.active {
-      display: block;
-    }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
 
     .info-grid {
       display: grid;
@@ -308,11 +300,26 @@
     }
 
     @media print {
-      .buttons, .saved-section, .lead, h1 { display: none !important; }
+      .tabs,
+      #tab-previa,
+      .buttons,
+      .saved-section,
+      .lead,
+      #tab-simulador > .panel:first-child,
+      .summary,
+      .screen-sheet {
+        display: none !important;
+      }
+
       body { background: white; }
-      .panel { box-shadow: none; border: 0; padding: 0; margin: 0; }
       .container { max-width: 100%; padding: 0; }
-      .screen-sheet { display: none !important; }
+      .panel {
+        box-shadow: none;
+        border: 0;
+        padding: 0;
+        margin: 0;
+      }
+      .tab-panel { display: block !important; }
       .print-sheet { display: block !important; }
       .payroll {
         border: 1px solid #444;
@@ -328,270 +335,275 @@
         color: #111;
       }
     }
-      body { background: white; }
-      .panel { box-shadow: none; border: 0; padding: 0; }
-      .container { padding: 0; }
-    }
   </style>
 </head>
 <body>
   <div class="container">
     <div class="tabs">
       <button class="tab-btn active" data-tab="simulador">Simulador</button>
-      <button class="tab-btn" data-tab="previa">Previa</button>
+      <button class="tab-btn" data-tab="previa">Apuntes de clase</button>
     </div>
 
     <div class="tab-panel active" id="tab-simulador">
-    <div class="panel">
-      <h1>Simulador de nómina</h1>
-      <p class="lead">Introduce los datos y pulsa en calcular para generar la nómina.</p>
+      <div class="panel">
+        <h1>Simulador de nómina</h1>
+        <p class="lead">Introduce los datos y pulsa en calcular para generar la nómina.</p>
 
-      <div class="subsection">
-        <h3>Datos generales</h3>
-        <div class="grid-3">
-          <div class="field">
-            <label for="empresa">Empresa</label>
-            <input id="empresa" value="Empresa Ejemplo S.L.">
+        <div class="subsection">
+          <h3>Datos generales</h3>
+          <div class="grid-3">
+            <div class="field">
+              <label for="empresa">Empresa</label>
+              <input id="empresa" value="Empresa Ejemplo S.L.">
+            </div>
+            <div class="field">
+              <label for="trabajador">Alumno/a</label>
+              <input id="trabajador" value="Alumno/a de prueba">
+            </div>
+            <div class="field">
+              <label for="cursoGrupo">Curso o grupo</label>
+              <input id="cursoGrupo" value="1º Gestión Administrativa">
+            </div>
+            <div class="field">
+              <label for="mes">Mes</label>
+              <select id="mes">
+                <option>Enero</option><option>Febrero</option><option>Marzo</option><option>Abril</option>
+                <option>Mayo</option><option>Junio</option><option>Julio</option><option>Agosto</option>
+                <option selected>Septiembre</option><option>Octubre</option><option>Noviembre</option><option>Diciembre</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="anio">Año</label>
+              <input id="anio" type="number" value="2026">
+            </div>
+            <div class="field">
+              <label for="dias">Días liquidados</label>
+              <input id="dias" type="number" value="30">
+            </div>
           </div>
-          <div class="field">
-            <label for="trabajador">Alumno/a</label>
-            <input id="trabajador" value="Alumno/a de prueba">
+        </div>
+
+        <div class="subsection">
+          <h3>Devengos</h3>
+          <div class="grid-3">
+            <div class="field"><label for="salarioBase">Salario base (€)</label><input id="salarioBase" type="number" value="1400"></div>
+            <div class="field"><label for="plusConvenio">Plus convenio (€)</label><input id="plusConvenio" type="number" value="120"></div>
+            <div class="field"><label for="complementos">Complementos (€)</label><input id="complementos" type="number" value="130"></div>
+            <div class="field"><label for="antiguedad">Antigüedad (€)</label><input id="antiguedad" type="number" value="60"></div>
+            <div class="field"><label for="horasExtra">Horas extra (€)</label><input id="horasExtra" type="number" value="0"></div>
+            <div class="field"><label for="pagasExtra">Prorrata pagas extra (€)</label><input id="pagasExtra" type="number" value="200"></div>
+            <div class="field"><label for="plusTransporte">Plus transporte (€)</label><input id="plusTransporte" type="number" value="50"></div>
+            <div class="field"><label for="dietas">Dietas (€)</label><input id="dietas" type="number" value="0"></div>
+            <div class="field"><label for="otrosNoSalariales">Otros no salariales (€)</label><input id="otrosNoSalariales" type="number" value="0"></div>
           </div>
-          <div class="field">
-            <label for="cursoGrupo">Curso o grupo</label>
-            <input id="cursoGrupo" value="1º Gestión Administrativa">
+        </div>
+
+        <div class="subsection">
+          <h3>Deducciones</h3>
+          <div class="grid-3">
+            <div class="field"><label for="cc">Contingencias comunes (%)</label><input id="cc" type="number" step="0.01" value="4.70"></div>
+            <div class="field"><label for="desempleo">Desempleo (%)</label><input id="desempleo" type="number" step="0.01" value="1.55"></div>
+            <div class="field"><label for="formacion">Formación profesional (%)</label><input id="formacion" type="number" step="0.01" value="0.10"></div>
+            <div class="field"><label for="irpf">IRPF (%)</label><input id="irpf" type="number" step="0.01" value="12.00"></div>
+            <div class="field"><label for="heFuerzaMayor">Cotización H.E. fuerza mayor (%)</label><input id="heFuerzaMayor" type="number" step="0.01" value="2.00"></div>
+            <div class="field"><label for="otrasDeducciones">Otras deducciones (€)</label><input id="otrasDeducciones" type="number" value="0"></div>
           </div>
-          <div class="field">
-            <label for="mes">Mes</label>
-            <select id="mes">
-              <option>Enero</option><option>Febrero</option><option>Marzo</option><option>Abril</option>
-              <option>Mayo</option><option>Junio</option><option>Julio</option><option>Agosto</option>
-              <option selected>Septiembre</option><option>Octubre</option><option>Noviembre</option><option>Diciembre</option>
-            </select>
-          </div>
-          <div class="field">
-            <label for="anio">Año</label>
-            <input id="anio" type="number" value="2026">
-          </div>
-          <div class="field">
-            <label for="dias">Días liquidados</label>
-            <input id="dias" type="number" value="30">
-          </div>
+        </div>
+
+        <div class="buttons">
+          <button class="btn-primary" id="btnCalcular">Calcular nómina</button>
+          <button class="btn-secondary" id="btnEjemplo">Cargar ejemplo</button>
+          <button class="btn-outline" id="btnGuardar">Guardar nómina</button>
+          <button class="btn-outline" id="btnLimpiar">Limpiar</button>
+          <button class="btn-outline" id="btnPDF">Imprimir / PDF</button>
         </div>
       </div>
 
-      <div class="subsection">
-        <h3>Devengos</h3>
-        <div class="grid-3">
-          <div class="field"><label for="salarioBase">Salario base (€)</label><input id="salarioBase" type="number" value="1400"></div>
-          <div class="field"><label for="plusConvenio">Plus convenio (€)</label><input id="plusConvenio" type="number" value="120"></div>
-          <div class="field"><label for="complementos">Complementos (€)</label><input id="complementos" type="number" value="130"></div>
-          <div class="field"><label for="antiguedad">Antigüedad (€)</label><input id="antiguedad" type="number" value="60"></div>
-          <div class="field"><label for="horasExtra">Horas extra (€)</label><input id="horasExtra" type="number" value="0"></div>
-          <div class="field"><label for="pagasExtra">Prorrata pagas extra (€)</label><input id="pagasExtra" type="number" value="200"></div>
-          <div class="field"><label for="plusTransporte">Plus transporte (€)</label><input id="plusTransporte" type="number" value="50"></div>
-          <div class="field"><label for="dietas">Dietas (€)</label><input id="dietas" type="number" value="0"></div>
-          <div class="field"><label for="otrosNoSalariales">Otros no salariales (€)</label><input id="otrosNoSalariales" type="number" value="0"></div>
+      <div class="panel">
+        <div class="summary">
+          <div class="summary-card"><span>Total devengado</span><strong id="resDevengado">0,00 €</strong></div>
+          <div class="summary-card"><span>Total deducciones</span><strong id="resDeducciones">0,00 €</strong></div>
+          <div class="summary-card"><span>Líquido a percibir</span><strong id="resLiquido">0,00 €</strong></div>
+          <div class="summary-card"><span>Base IRPF</span><strong id="resBaseIrpf">0,00 €</strong></div>
         </div>
-      </div>
 
-      <div class="subsection">
-        <h3>Deducciones</h3>
-        <div class="grid-3">
-          <div class="field"><label for="cc">Contingencias comunes (%)</label><input id="cc" type="number" step="0.01" value="4.70"></div>
-          <div class="field"><label for="desempleo">Desempleo (%)</label><input id="desempleo" type="number" step="0.01" value="1.55"></div>
-          <div class="field"><label for="formacion">Formación profesional (%)</label><input id="formacion" type="number" step="0.01" value="0.10"></div>
-          <div class="field"><label for="irpf">IRPF (%)</label><input id="irpf" type="number" step="0.01" value="12.00"></div>
-          <div class="field"><label for="heFuerzaMayor">Cotización H.E. fuerza mayor (%)</label><input id="heFuerzaMayor" type="number" step="0.01" value="2.00"></div>
-          <div class="field"><label for="otrasDeducciones">Otras deducciones (€)</label><input id="otrasDeducciones" type="number" value="0"></div>
-        </div>
-      </div>
+        <div class="payroll" id="zonaImpresion">
+          <div class="screen-sheet">
+            <div class="payroll-header">
+              <div style="font-size:1.12rem;font-weight:800;margin-bottom:10px;">Recibo de salarios</div>
+              <div class="payroll-meta">
+                <div><strong>Empresa:</strong> <span id="outEmpresa">-</span></div>
+                <div><strong>Alumno/a:</strong> <span id="outTrabajador">-</span></div>
+                <div><strong>Curso / grupo:</strong> <span id="outCurso">-</span></div>
+                <div><strong>Periodo:</strong> <span id="outPeriodo">-</span></div>
+                <div><strong>Días:</strong> <span id="outDias">-</span></div>
+                <div><strong>Documento:</strong> Simulación educativa</div>
+              </div>
+            </div>
 
-      <div class="buttons">
-        <button class="btn-primary" id="btnCalcular">Calcular nómina</button>
-        <button class="btn-secondary" id="btnEjemplo">Cargar ejemplo</button>
-        <button class="btn-outline" id="btnGuardar">Guardar nómina</button>
-        <button class="btn-outline" id="btnLimpiar">Limpiar</button>
-        <button class="btn-outline" id="btnPDF">Imprimir / PDF</button>
-      </div>
-    </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>CONCEPTO</th><th class="num">IMPORTE</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>Salario base</td><td class="num" id="outSalarioBase">0,00 €</td></tr>
+                  <tr><td>Plus convenio</td><td class="num" id="outPlusConvenio">0,00 €</td></tr>
+                  <tr><td>Complementos</td><td class="num" id="outComplementos">0,00 €</td></tr>
+                  <tr><td>Antigüedad</td><td class="num" id="outAntiguedad">0,00 €</td></tr>
+                  <tr><td>Horas extra</td><td class="num" id="outHorasExtra">0,00 €</td></tr>
+                  <tr><td>Prorrata pagas extra</td><td class="num" id="outPagasExtra">0,00 €</td></tr>
+                  <tr><td>Plus transporte</td><td class="num" id="outPlusTransporte">0,00 €</td></tr>
+                  <tr><td>Dietas</td><td class="num" id="outDietas">0,00 €</td></tr>
+                  <tr><td>Otros no salariales</td><td class="num" id="outOtrosNoSalariales">0,00 €</td></tr>
+                </tbody>
+                <tfoot>
+                  <tr><td>Total devengado</td><td class="num" id="outTotalDevengado">0,00 €</td></tr>
+                </tfoot>
+              </table>
+            </div>
 
-    <div class="panel">
-      <div class="summary">
-        <div class="summary-card"><span>Total devengado</span><strong id="resDevengado">0,00 €</strong></div>
-        <div class="summary-card"><span>Total deducciones</span><strong id="resDeducciones">0,00 €</strong></div>
-        <div class="summary-card"><span>Líquido a percibir</span><strong id="resLiquido">0,00 €</strong></div>
-        <div class="summary-card"><span>Base IRPF</span><strong id="resBaseIrpf">0,00 €</strong></div>
-      </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>DEDUCCIONES</th><th class="num">IMPORTE</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>Contingencias comunes</td><td class="num" id="outCcCuota">0,00 €</td></tr>
+                  <tr><td>Desempleo</td><td class="num" id="outDesempleoCuota">0,00 €</td></tr>
+                  <tr><td>Formación profesional</td><td class="num" id="outFormacionCuota">0,00 €</td></tr>
+                  <tr><td>IRPF</td><td class="num" id="outIrpfCuota">0,00 €</td></tr>
+                  <tr><td>H.E. fuerza mayor</td><td class="num" id="outHeCuota">0,00 €</td></tr>
+                  <tr><td>Otras deducciones</td><td class="num" id="outOtrasDeducciones">0,00 €</td></tr>
+                </tbody>
+                <tfoot>
+                  <tr><td>Total deducciones</td><td class="num" id="outTotalDeducciones">0,00 €</td></tr>
+                </tfoot>
+              </table>
+            </div>
 
-      <div class="payroll" id="zonaImpresion">
-        <div class="screen-sheet">
-          <div class="payroll-header">
-            <div style="font-size:1.12rem;font-weight:800;margin-bottom:10px;">Recibo de salarios</div>
-            <div class="payroll-meta">
-              <div><strong>Empresa:</strong> <span id="outEmpresa">-</span></div>
-              <div><strong>Alumno/a:</strong> <span id="outTrabajador">-</span></div>
-              <div><strong>Curso / grupo:</strong> <span id="outCurso">-</span></div>
-              <div><strong>Periodo:</strong> <span id="outPeriodo">-</span></div>
-              <div><strong>Días:</strong> <span id="outDias">-</span></div>
-              <div><strong>Documento:</strong> Simulación educativa</div>
+            <div class="liquido">
+              Líquido total a percibir: <span id="outLiquido">0,00 €</span>
             </div>
           </div>
 
-          <div class="table-wrap">
+          <div class="print-sheet" style="display:none; padding:12px; background:white;">
             <table>
-              <thead>
-                <tr><th>CONCEPTO</th><th class="num">IMPORTE</th></tr>
-              </thead>
-              <tbody>
-                <tr><td>Salario base</td><td class="num" id="outSalarioBase">0,00 €</td></tr>
-                <tr><td>Plus convenio</td><td class="num" id="outPlusConvenio">0,00 €</td></tr>
-                <tr><td>Complementos</td><td class="num" id="outComplementos">0,00 €</td></tr>
-                <tr><td>Antigüedad</td><td class="num" id="outAntiguedad">0,00 €</td></tr>
-                <tr><td>Horas extra</td><td class="num" id="outHorasExtra">0,00 €</td></tr>
-                <tr><td>Prorrata pagas extra</td><td class="num" id="outPagasExtra">0,00 €</td></tr>
-                <tr><td>Plus transporte</td><td class="num" id="outPlusTransporte">0,00 €</td></tr>
-                <tr><td>Dietas</td><td class="num" id="outDietas">0,00 €</td></tr>
-                <tr><td>Otros no salariales</td><td class="num" id="outOtrosNoSalariales">0,00 €</td></tr>
-              </tbody>
-              <tfoot>
-                <tr><td>Total devengado</td><td class="num" id="outTotalDevengado">0,00 €</td></tr>
-              </tfoot>
+              <tr>
+                <td colspan="2"><strong>EMPRESA:</strong> <span id="printEmpresa">-</span></td>
+                <td><strong>CURSO / GRUPO:</strong> <span id="printCurso">-</span></td>
+                <td><strong>DÍAS:</strong> <span id="printDias">-</span></td>
+              </tr>
+            </table>
+
+            <table>
+              <tr>
+                <th>ALUMNO/A</th>
+                <th>PERIODO</th>
+                <th>BASE IRPF</th>
+                <th>LÍQUIDO</th>
+              </tr>
+              <tr>
+                <td id="printTrabajador">-</td>
+                <td id="printPeriodo">-</td>
+                <td class="num" id="printBaseIrpf">0,00 €</td>
+                <td class="num" id="printLiquido">0,00 €</td>
+              </tr>
+            </table>
+
+            <table>
+              <tr>
+                <th>CUANTÍA</th>
+                <th>PRECIO</th>
+                <th>CONCEPTO</th>
+                <th>DEVENGOS</th>
+                <th>DEDUCCIONES</th>
+              </tr>
+              <tr><td class="num">1</td><td class="num" id="p1">0,00 €</td><td>Salario base</td><td class="num" id="d1">0,00 €</td><td></td></tr>
+              <tr><td class="num">1</td><td class="num" id="p2">0,00 €</td><td>Plus convenio</td><td class="num" id="d2">0,00 €</td><td></td></tr>
+              <tr><td class="num">1</td><td class="num" id="p3">0,00 €</td><td>Complementos</td><td class="num" id="d3">0,00 €</td><td></td></tr>
+              <tr><td class="num">1</td><td class="num" id="p4">0,00 €</td><td>Antigüedad</td><td class="num" id="d4">0,00 €</td><td></td></tr>
+              <tr><td class="num">1</td><td class="num" id="p5">0,00 €</td><td>Prorrata pagas extra</td><td class="num" id="d5">0,00 €</td><td></td></tr>
+              <tr><td class="num">1</td><td class="num" id="p6">0,00 €</td><td>Plus transporte</td><td class="num" id="d6">0,00 €</td><td></td></tr>
+              <tr><td class="num">1</td><td class="num" id="p7">0,00 €</td><td>Dietas</td><td class="num" id="d7">0,00 €</td><td></td></tr>
+              <tr><td class="num">1</td><td class="num" id="p8">0,00 €</td><td>Otros no salariales</td><td class="num" id="d8">0,00 €</td><td></td></tr>
+              <tr><td class="num">1</td><td class="num" id="p9">0,00 €</td><td>Horas extra</td><td class="num" id="d9">0,00 €</td><td></td></tr>
+              <tr><td></td><td></td><td>Cotización contingencias comunes (<span id="printPctCc">0%</span>)</td><td></td><td class="num" id="dd1">0,00 €</td></tr>
+              <tr><td></td><td></td><td>Cotización desempleo (<span id="printPctDesempleo">0%</span>)</td><td></td><td class="num" id="dd2">0,00 €</td></tr>
+              <tr><td></td><td></td><td>Cotización formación profesional (<span id="printPctFormacion">0%</span>)</td><td></td><td class="num" id="dd3">0,00 €</td></tr>
+              <tr><td></td><td></td><td>Tributación IRPF (<span id="printPctIrpf">0%</span>)</td><td></td><td class="num" id="dd4">0,00 €</td></tr>
+              <tr><td></td><td></td><td>Horas extra fuerza mayor (<span id="printPctHe">0%</span>)</td><td></td><td class="num" id="dd5">0,00 €</td></tr>
+              <tr><td></td><td></td><td>Otras deducciones</td><td></td><td class="num" id="dd6">0,00 €</td></tr>
+            </table>
+
+            <table>
+              <tr>
+                <th>T. DEVENGADO</th>
+                <th>T. A DEDUCIR</th>
+                <th>LÍQUIDO A PERCIBIR</th>
+              </tr>
+              <tr>
+                <td class="num" id="printTotalDevengado">0,00 €</td>
+                <td class="num" id="printTotalDeducciones">0,00 €</td>
+                <td class="num" id="printLiquidoBottom">0,00 €</td>
+              </tr>
+            </table>
+
+            <table>
+              <tr>
+                <th>APORTACIÓN EMPRESA</th>
+                <th>BASE</th>
+                <th>TIPO</th>
+                <th>IMPORTE</th>
+              </tr>
+              <tr><td>Contingencias comunes</td><td class="num" id="empBase1">0,00 €</td><td class="num">23,60 %</td><td class="num" id="empImp1">0,00 €</td></tr>
+              <tr><td>AT y EP</td><td class="num" id="empBase2">0,00 €</td><td class="num">1,00 %</td><td class="num" id="empImp2">0,00 €</td></tr>
+              <tr><td>Desempleo</td><td class="num" id="empBase3">0,00 €</td><td class="num">5,50 %</td><td class="num" id="empImp3">0,00 €</td></tr>
+              <tr><td>Formación profesional</td><td class="num" id="empBase4">0,00 €</td><td class="num">0,60 %</td><td class="num" id="empImp4">0,00 €</td></tr>
+              <tr><td>FOGASA</td><td class="num" id="empBase5">0,00 €</td><td class="num">0,20 %</td><td class="num" id="empImp5">0,00 €</td></tr>
             </table>
           </div>
-
-          <div class="table-wrap">
-            <table>
-              <thead>
-                <tr><th>DEDUCCIONES</th><th class="num">IMPORTE</th></tr>
-              </thead>
-              <tbody>
-                <tr><td>Contingencias comunes</td><td class="num" id="outCcCuota">0,00 €</td></tr>
-                <tr><td>Desempleo</td><td class="num" id="outDesempleoCuota">0,00 €</td></tr>
-                <tr><td>Formación profesional</td><td class="num" id="outFormacionCuota">0,00 €</td></tr>
-                <tr><td>IRPF</td><td class="num" id="outIrpfCuota">0,00 €</td></tr>
-                <tr><td>H.E. fuerza mayor</td><td class="num" id="outHeCuota">0,00 €</td></tr>
-                <tr><td>Otras deducciones</td><td class="num" id="outOtrasDeducciones">0,00 €</td></tr>
-              </tbody>
-              <tfoot>
-                <tr><td>Total deducciones</td><td class="num" id="outTotalDeducciones">0,00 €</td></tr>
-              </tfoot>
-            </table>
-          </div>
-
-          <div class="liquido">
-            Líquido total a percibir: <span id="outLiquido">0,00 €</span>
-          </div>
-        </div>
-
-        <div class="print-sheet" style="display:none; padding:12px; background:white;">
-          <table>
-            <tr>
-              <td colspan="2"><strong>EMPRESA:</strong> <span id="printEmpresa">-</span></td>
-              <td><strong>CURSO / GRUPO:</strong> <span id="printCurso">-</span></td>
-              <td><strong>DÍAS:</strong> <span id="printDias">-</span></td>
-            </tr>
-          </table>
-
-          <table>
-            <tr>
-              <th>ALUMNO/A</th>
-              <th>PERIODO</th>
-              <th>BASE IRPF</th>
-              <th>LÍQUIDO</th>
-            </tr>
-            <tr>
-              <td id="printTrabajador">-</td>
-              <td id="printPeriodo">-</td>
-              <td class="num" id="printBaseIrpf">0,00 €</td>
-              <td class="num" id="printLiquido">0,00 €</td>
-            </tr>
-          </table>
-
-          <table>
-            <tr>
-              <th>CUANTÍA</th>
-              <th>PRECIO</th>
-              <th>CONCEPTO</th>
-              <th>DEVENGOS</th>
-              <th>DEDUCCIONES</th>
-            </tr>
-            <tr><td class="num">1</td><td class="num" id="p1">0,00 €</td><td>Salario base</td><td class="num" id="d1">0,00 €</td><td></td></tr>
-            <tr><td class="num">1</td><td class="num" id="p2">0,00 €</td><td>Plus convenio</td><td class="num" id="d2">0,00 €</td><td></td></tr>
-            <tr><td class="num">1</td><td class="num" id="p3">0,00 €</td><td>Complementos</td><td class="num" id="d3">0,00 €</td><td></td></tr>
-            <tr><td class="num">1</td><td class="num" id="p4">0,00 €</td><td>Antigüedad</td><td class="num" id="d4">0,00 €</td><td></td></tr>
-            <tr><td class="num">1</td><td class="num" id="p5">0,00 €</td><td>Prorrata pagas extra</td><td class="num" id="d5">0,00 €</td><td></td></tr>
-            <tr><td class="num">1</td><td class="num" id="p6">0,00 €</td><td>Plus transporte</td><td class="num" id="d6">0,00 €</td><td></td></tr>
-            <tr><td class="num">1</td><td class="num" id="p7">0,00 €</td><td>Dietas</td><td class="num" id="d7">0,00 €</td><td></td></tr>
-            <tr><td class="num">1</td><td class="num" id="p8">0,00 €</td><td>Otros no salariales</td><td class="num" id="d8">0,00 €</td><td></td></tr>
-            <tr><td class="num">1</td><td class="num" id="p9">0,00 €</td><td>Horas extra</td><td class="num" id="d9">0,00 €</td><td></td></tr>
-            <tr><td></td><td></td><td>Cotización contingencias comunes</td><td></td><td class="num" id="dd1">0,00 €</td></tr>
-            <tr><td></td><td></td><td>Cotización desempleo</td><td></td><td class="num" id="dd2">0,00 €</td></tr>
-            <tr><td></td><td></td><td>Cotización formación profesional</td><td></td><td class="num" id="dd3">0,00 €</td></tr>
-            <tr><td></td><td></td><td>Tributación IRPF</td><td></td><td class="num" id="dd4">0,00 €</td></tr>
-            <tr><td></td><td></td><td>Horas extra fuerza mayor</td><td></td><td class="num" id="dd5">0,00 €</td></tr>
-            <tr><td></td><td></td><td>Otras deducciones</td><td></td><td class="num" id="dd6">0,00 €</td></tr>
-          </table>
-
-          <table>
-            <tr>
-              <th>T. DEVENGADO</th>
-              <th>T. A DEDUCIR</th>
-              <th>LÍQUIDO A PERCIBIR</th>
-            </tr>
-            <tr>
-              <td class="num" id="printTotalDevengado">0,00 €</td>
-              <td class="num" id="printTotalDeducciones">0,00 €</td>
-              <td class="num" id="printLiquidoBottom">0,00 €</td>
-            </tr>
-          </table>
         </div>
       </div>
-    </div>
 
-    <div class="panel saved-section">
-      <h2>Nóminas guardadas</h2>
-      <p class="small">Se guardan en este navegador para que el alumno pueda recuperar su trabajo.</p>
-      <div class="buttons" style="margin-top:0; margin-bottom:12px;">
-        <button class="btn-secondary" id="btnRefreshSaved">Actualizar lista</button>
-        <button class="btn-outline" id="btnDeleteAllSaved">Borrar todas</button>
-      </div>
-      <div class="saved-box" id="savedList">
-        <div class="small">No hay nóminas guardadas todavía.</div>
+      <div class="panel saved-section">
+        <h2>Nóminas guardadas</h2>
+        <p class="small">Se guardan en este navegador para que el alumno pueda recuperar su trabajo.</p>
+        <div class="buttons" style="margin-top:0; margin-bottom:12px;">
+          <button class="btn-secondary" id="btnRefreshSaved">Actualizar lista</button>
+          <button class="btn-outline" id="btnDeleteAllSaved">Borrar todas</button>
+        </div>
+        <div class="saved-box" id="savedList">
+          <div class="small">No hay nóminas guardadas todavía.</div>
+        </div>
       </div>
     </div>
 
     <div class="tab-panel" id="tab-previa">
       <div class="panel">
-        <h1>Conceptos y términos de la nómina</h1>
-        <p class="lead">Esta pestaña sirve como guía previa para que el alumno entienda qué significa cada bloque antes de rellenar la nómina.</p>
+        <h1>Apuntes de clase: la nómina</h1>
+        <p class="lead">Resumen visual para estudiar antes de hacer ejercicios de nóminas.</p>
 
         <div class="info-grid">
-          <div class="info-card"><h3>Qué es una nómina</h3><p>La nómina es el documento que refleja las cantidades que percibe una persona trabajadora por su actividad laboral durante un periodo concreto y también las deducciones que se le aplican.</p></div>
-          <div class="info-card"><h3>Empresa</h3><p>Es la entidad que contrata y paga al trabajador. En la nómina aparece como pagadora del salario.</p></div>
-          <div class="info-card"><h3>Trabajador o alumna/o</h3><p>Es la persona que recibe la remuneración. En esta web el campo puede usarse con el nombre del alumno para prácticas o con el nombre del trabajador en un supuesto.</p></div>
-          <div class="info-card"><h3>Periodo de liquidación</h3><p>Es el intervalo de tiempo al que corresponde la nómina. Suele indicarse por mes y año, junto con el número de días liquidados.</p></div>
-          <div class="info-card"><h3>Devengos</h3><p>Son todas las cantidades que el trabajador genera a su favor. Incluyen percepciones salariales y, en algunos casos, percepciones no salariales.</p></div>
-          <div class="info-card"><h3>Percepciones salariales</h3><p>Son importes que retribuyen directamente el trabajo realizado. Aquí se incluyen salario base, plus convenio, complementos, antigüedad, horas extra y prorrata de pagas extra.</p></div>
-          <div class="info-card"><h3>Salario base</h3><p>Es la cantidad principal que se cobra por el trabajo realizado y suele estar fijada por contrato o convenio colectivo.</p></div>
-          <div class="info-card"><h3>Plus convenio</h3><p>Es un complemento fijado por el convenio. Puede variar según categoría profesional, sector o condiciones del puesto.</p></div>
-          <div class="info-card"><h3>Complementos salariales</h3><p>Son cantidades adicionales al salario base. Pueden estar relacionadas con el puesto, la productividad, la responsabilidad, turnicidad u otras circunstancias.</p></div>
-          <div class="info-card"><h3>Antigüedad</h3><p>Es un complemento que retribuye el tiempo que la persona lleva trabajando en la empresa, cuando así lo establece el convenio o el contrato.</p></div>
-          <div class="info-card"><h3>Horas extraordinarias</h3><p>Son las horas trabajadas por encima de la jornada ordinaria. Su tratamiento puede tener particularidades de cotización.</p></div>
-          <div class="info-card"><h3>Prorrata de pagas extra</h3><p>Es la parte proporcional de las pagas extraordinarias repartida entre las nóminas del año, en lugar de cobrarse en momentos concretos.</p></div>
-          <div class="info-card"><h3>Percepciones no salariales</h3><p>Son cantidades que no retribuyen directamente el trabajo, sino que compensan gastos o situaciones concretas, como transporte, dietas u otros conceptos similares.</p></div>
-          <div class="info-card"><h3>Plus transporte</h3><p>Es una cantidad destinada a compensar desplazamientos o transporte, según el supuesto o la regulación aplicable.</p></div>
-          <div class="info-card"><h3>Dietas</h3><p>Son importes destinados a compensar gastos de manutención o estancia derivados del trabajo.</p></div>
-          <div class="info-card"><h3>Deducciones</h3><p>Son las cantidades que se restan del total devengado. Gracias a ellas se obtiene el líquido final que se cobra.</p></div>
-          <div class="info-card"><h3>Contingencias comunes</h3><p>Es una cotización destinada a cubrir situaciones como enfermedad común o jubilación. Se calcula aplicando un porcentaje sobre una base determinada.</p></div>
-          <div class="info-card"><h3>Desempleo</h3><p>Es la cotización vinculada a la protección por desempleo. También se calcula mediante un porcentaje sobre la base correspondiente.</p></div>
-          <div class="info-card"><h3>Formación profesional</h3><p>Es una pequeña cotización que contribuye a financiar acciones de formación profesional.</p></div>
-          <div class="info-card"><h3>IRPF</h3><p>Es la retención a cuenta del Impuesto sobre la Renta de las Personas Físicas. Su porcentaje depende de distintos factores y reduce el importe neto a cobrar.</p></div>
-          <div class="info-card"><h3>Otras deducciones</h3><p>En este campo pueden incluirse anticipos, embargos o cualquier otro descuento adicional que el ejercicio práctico quiera contemplar.</p></div>
-          <div class="info-card"><h3>Base IRPF</h3><p>Es el importe sobre el que se aplica el porcentaje de retención del IRPF en este simulador.</p></div>
-          <div class="info-card"><h3>Total devengado</h3><p>Es la suma de todas las percepciones del trabajador, salariales y no salariales, antes de descontar deducciones.</p></div>
-          <div class="info-card"><h3>Total deducciones</h3><p>Es la suma de todas las cantidades que se restan al total devengado.</p></div>
-          <div class="info-card"><h3>Líquido a percibir</h3><p>Es la cantidad final que recibe el trabajador una vez descontadas todas las deducciones. Es el importe neto.</p></div>
+          <div class="info-card" style="background:#eef6ff; border-color:#cfe0ff;"><h3>Qué es una nómina</h3><p><strong>Definición corta:</strong> documento que refleja lo que cobra una persona trabajadora y lo que se le descuenta.</p><p style="margin-top:8px;"><strong>Ejemplo:</strong> una nómina de abril muestra salario, pluses, IRPF y Seguridad Social.</p></div>
+          <div class="info-card" style="background:#eefcf3; border-color:#c8ebd4;"><h3>Periodo de liquidación</h3><p><strong>Definición corta:</strong> tiempo al que corresponde la nómina.</p><p style="margin-top:8px;"><strong>Ejemplo:</strong> abril de 2026, 30 días.</p></div>
+          <div class="info-card" style="background:#fff8eb; border-color:#f3d59b;"><h3>Devengos</h3><p><strong>Definición corta:</strong> cantidades que el trabajador genera a su favor.</p><p style="margin-top:8px;"><strong>Ejemplo:</strong> salario base, antigüedad, plus convenio, horas extra.</p></div>
+          <div class="info-card" style="background:#fff1f3; border-color:#f2c2cb;"><h3>Deducciones</h3><p><strong>Definición corta:</strong> cantidades que se restan del total devengado.</p><p style="margin-top:8px;"><strong>Ejemplo:</strong> contingencias comunes, desempleo, formación profesional e IRPF.</p></div>
+          <div class="info-card" style="background:#eef6ff; border-color:#cfe0ff;"><h3>Salario base</h3><p><strong>Definición corta:</strong> retribución principal fijada en contrato o convenio.</p><p style="margin-top:8px;"><strong>Ejemplo:</strong> 1.400 € al mes.</p></div>
+          <div class="info-card" style="background:#eef6ff; border-color:#cfe0ff;"><h3>Plus convenio</h3><p><strong>Definición corta:</strong> complemento establecido por el convenio colectivo.</p><p style="margin-top:8px;"><strong>Ejemplo:</strong> 120 € mensuales.</p></div>
+          <div class="info-card" style="background:#eef6ff; border-color:#cfe0ff;"><h3>Complementos salariales</h3><p><strong>Definición corta:</strong> cantidades añadidas al salario base por circunstancias del puesto o del rendimiento.</p><p style="margin-top:8px;"><strong>Ejemplo:</strong> productividad, responsabilidad o turnicidad.</p></div>
+          <div class="info-card" style="background:#eef6ff; border-color:#cfe0ff;"><h3>Antigüedad</h3><p><strong>Definición corta:</strong> complemento ligado al tiempo que una persona lleva en la empresa.</p><p style="margin-top:8px;"><strong>Ejemplo:</strong> 60 € por años trabajados.</p></div>
+          <div class="info-card" style="background:#eef6ff; border-color:#cfe0ff;"><h3>Horas extraordinarias</h3><p><strong>Definición corta:</strong> horas trabajadas por encima de la jornada normal.</p><p style="margin-top:8px;"><strong>Ejemplo:</strong> 80 € por exceso de jornada.</p></div>
+          <div class="info-card" style="background:#eef6ff; border-color:#cfe0ff;"><h3>Prorrata de pagas extra</h3><p><strong>Definición corta:</strong> parte proporcional de las pagas extra incluida cada mes.</p><p style="margin-top:8px;"><strong>Ejemplo:</strong> 200 € mensuales de prorrata.</p></div>
+          <div class="info-card" style="background:#eefcf3; border-color:#c8ebd4;"><h3>Percepciones no salariales</h3><p><strong>Definición corta:</strong> cantidades que compensan gastos o situaciones, no el trabajo en sí.</p><p style="margin-top:8px;"><strong>Ejemplo:</strong> plus transporte o dietas.</p></div>
+          <div class="info-card" style="background:#fff1f3; border-color:#f2c2cb;"><h3>Contingencias comunes</h3><p><strong>Definición corta:</strong> cotización para cubrir situaciones como enfermedad común o jubilación.</p><p style="margin-top:8px;"><strong>Ejemplo:</strong> 4,70 % a cargo del trabajador en muchos ejercicios.</p></div>
+          <div class="info-card" style="background:#fff1f3; border-color:#f2c2cb;"><h3>Desempleo</h3><p><strong>Definición corta:</strong> cotización vinculada a la protección por desempleo.</p><p style="margin-top:8px;"><strong>Ejemplo:</strong> 1,55 % o 1,60 % según el supuesto.</p></div>
+          <div class="info-card" style="background:#fff1f3; border-color:#f2c2cb;"><h3>Formación profesional</h3><p><strong>Definición corta:</strong> pequeña cotización destinada a formación profesional.</p><p style="margin-top:8px;"><strong>Ejemplo:</strong> 0,10 %.</p></div>
+          <div class="info-card" style="background:#fff1f3; border-color:#f2c2cb;"><h3>IRPF</h3><p><strong>Definición corta:</strong> retención a cuenta del impuesto sobre la renta.</p><p style="margin-top:8px;"><strong>Ejemplo:</strong> 12 % sobre la base correspondiente.</p></div>
+          <div class="info-card" style="background:#fff8eb; border-color:#f3d59b;"><h3>Total devengado</h3><p><strong>Definición corta:</strong> suma de todo lo que se percibe antes de restar descuentos.</p><p style="margin-top:8px;"><strong>Ejemplo:</strong> 1.950 €.</p></div>
+          <div class="info-card" style="background:#fff1f3; border-color:#f2c2cb;"><h3>Total deducciones</h3><p><strong>Definición corta:</strong> suma de todas las cantidades que se descuentan.</p><p style="margin-top:8px;"><strong>Ejemplo:</strong> 320 €.</p></div>
+          <div class="info-card" style="background:#eefcf3; border-color:#c8ebd4;"><h3>Líquido a percibir</h3><p><strong>Definición corta:</strong> cantidad final que realmente cobra el trabajador.</p><p style="margin-top:8px;"><strong>Ejemplo:</strong> 1.630 €.</p></div>
+          <div class="info-card" style="background:#eef6ff; border-color:#cfe0ff;"><h3>Idea clave para examen</h3><p><strong>Regla rápida:</strong> primero se suman los devengos, después se calculan las deducciones y al final se obtiene el líquido.</p><p style="margin-top:8px;"><strong>Esquema:</strong> devengado − deducciones = líquido.</p></div>
         </div>
       </div>
     </div>
@@ -602,7 +614,10 @@
     const STORAGE_KEY = 'nominas_alumno_guardadas_v1';
 
     function money(n) {
-      return (Number(n) || 0).toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €';
+      return (Number(n) || 0).toLocaleString('es-ES', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      }) + ' €';
     }
 
     function num(id) {
@@ -649,6 +664,14 @@
       const cuotaHe = data.horasExtra * data.heFuerzaMayor / 100;
       const totalDeducciones = cuotaCC + cuotaDesempleo + cuotaFormacion + cuotaIrpf + cuotaHe + data.otrasDeducciones;
       const liquido = totalDevengado - totalDeducciones;
+
+      const empBaseMain = baseDesempleo;
+      const empCc = empBaseMain * 23.60 / 100;
+      const empAtEp = empBaseMain * 1.00 / 100;
+      const empDesempleo = empBaseMain * 5.50 / 100;
+      const empFormacion = empBaseMain * 0.60 / 100;
+      const empFogasa = empBaseMain * 0.20 / 100;
+
       return {
         totalDevengado,
         baseIrpf,
@@ -658,7 +681,13 @@
         cuotaIrpf,
         cuotaHe,
         totalDeducciones,
-        liquido
+        liquido,
+        empBaseMain,
+        empCc,
+        empAtEp,
+        empDesempleo,
+        empFormacion,
+        empFogasa
       };
     }
 
@@ -708,6 +737,12 @@
       $('printTotalDeducciones').textContent = money(r.totalDeducciones);
       $('printLiquidoBottom').textContent = money(r.liquido);
 
+      $('printPctCc').textContent = `${data.cc.toFixed(2)} %`;
+      $('printPctDesempleo').textContent = `${data.desempleo.toFixed(2)} %`;
+      $('printPctFormacion').textContent = `${data.formacion.toFixed(2)} %`;
+      $('printPctIrpf').textContent = `${data.irpf.toFixed(2)} %`;
+      $('printPctHe').textContent = `${data.heFuerzaMayor.toFixed(2)} %`;
+
       $('p1').textContent = money(data.salarioBase); $('d1').textContent = money(data.salarioBase);
       $('p2').textContent = money(data.plusConvenio); $('d2').textContent = money(data.plusConvenio);
       $('p3').textContent = money(data.complementos); $('d3').textContent = money(data.complementos);
@@ -723,6 +758,17 @@
       $('dd4').textContent = money(r.cuotaIrpf);
       $('dd5').textContent = money(r.cuotaHe);
       $('dd6').textContent = money(data.otrasDeducciones);
+
+      $('empBase1').textContent = money(r.empBaseMain);
+      $('empBase2').textContent = money(r.empBaseMain);
+      $('empBase3').textContent = money(r.empBaseMain);
+      $('empBase4').textContent = money(r.empBaseMain);
+      $('empBase5').textContent = money(r.empBaseMain);
+      $('empImp1').textContent = money(r.empCc);
+      $('empImp2').textContent = money(r.empAtEp);
+      $('empImp3').textContent = money(r.empDesempleo);
+      $('empImp4').textContent = money(r.empFormacion);
+      $('empImp5').textContent = money(r.empFogasa);
 
       return { data, result: r };
     }
