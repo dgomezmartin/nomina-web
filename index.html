@@ -223,6 +223,61 @@
       color: var(--ok);
     }
 
+    .tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .tab-btn {
+      border: 1px solid var(--line);
+      background: #eef4ff;
+      color: var(--primary);
+      border-radius: 999px;
+      padding: 10px 14px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, var(--primary), var(--primary-2));
+      color: white;
+      border-color: transparent;
+    }
+
+    .tab-panel {
+      display: none;
+    }
+
+    .tab-panel.active {
+      display: block;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .info-card {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 16px;
+      background: #fafcff;
+    }
+
+    .info-card h3 {
+      margin-bottom: 8px;
+      font-size: 1rem;
+    }
+
+    .info-card p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
     .saved-box {
       margin-top: 12px;
       display: grid;
@@ -247,7 +302,7 @@
     }
 
     @media (max-width: 860px) {
-      .grid-2, .grid-3, .summary, .payroll-meta {
+      .grid-2, .grid-3, .summary, .payroll-meta, .info-grid {
         grid-template-columns: 1fr;
       }
     }
@@ -281,6 +336,12 @@
 </head>
 <body>
   <div class="container">
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="simulador">Simulador</button>
+      <button class="tab-btn" data-tab="previa">Previa</button>
+    </div>
+
+    <div class="tab-panel active" id="tab-simulador">
     <div class="panel">
       <h1>Simulador de nómina</h1>
       <p class="lead">Introduce los datos y pulsa en calcular para generar la nómina.</p>
@@ -497,6 +558,41 @@
       </div>
       <div class="saved-box" id="savedList">
         <div class="small">No hay nóminas guardadas todavía.</div>
+      </div>
+    </div>
+
+    <div class="tab-panel" id="tab-previa">
+      <div class="panel">
+        <h1>Conceptos y términos de la nómina</h1>
+        <p class="lead">Esta pestaña sirve como guía previa para que el alumno entienda qué significa cada bloque antes de rellenar la nómina.</p>
+
+        <div class="info-grid">
+          <div class="info-card"><h3>Qué es una nómina</h3><p>La nómina es el documento que refleja las cantidades que percibe una persona trabajadora por su actividad laboral durante un periodo concreto y también las deducciones que se le aplican.</p></div>
+          <div class="info-card"><h3>Empresa</h3><p>Es la entidad que contrata y paga al trabajador. En la nómina aparece como pagadora del salario.</p></div>
+          <div class="info-card"><h3>Trabajador o alumna/o</h3><p>Es la persona que recibe la remuneración. En esta web el campo puede usarse con el nombre del alumno para prácticas o con el nombre del trabajador en un supuesto.</p></div>
+          <div class="info-card"><h3>Periodo de liquidación</h3><p>Es el intervalo de tiempo al que corresponde la nómina. Suele indicarse por mes y año, junto con el número de días liquidados.</p></div>
+          <div class="info-card"><h3>Devengos</h3><p>Son todas las cantidades que el trabajador genera a su favor. Incluyen percepciones salariales y, en algunos casos, percepciones no salariales.</p></div>
+          <div class="info-card"><h3>Percepciones salariales</h3><p>Son importes que retribuyen directamente el trabajo realizado. Aquí se incluyen salario base, plus convenio, complementos, antigüedad, horas extra y prorrata de pagas extra.</p></div>
+          <div class="info-card"><h3>Salario base</h3><p>Es la cantidad principal que se cobra por el trabajo realizado y suele estar fijada por contrato o convenio colectivo.</p></div>
+          <div class="info-card"><h3>Plus convenio</h3><p>Es un complemento fijado por el convenio. Puede variar según categoría profesional, sector o condiciones del puesto.</p></div>
+          <div class="info-card"><h3>Complementos salariales</h3><p>Son cantidades adicionales al salario base. Pueden estar relacionadas con el puesto, la productividad, la responsabilidad, turnicidad u otras circunstancias.</p></div>
+          <div class="info-card"><h3>Antigüedad</h3><p>Es un complemento que retribuye el tiempo que la persona lleva trabajando en la empresa, cuando así lo establece el convenio o el contrato.</p></div>
+          <div class="info-card"><h3>Horas extraordinarias</h3><p>Son las horas trabajadas por encima de la jornada ordinaria. Su tratamiento puede tener particularidades de cotización.</p></div>
+          <div class="info-card"><h3>Prorrata de pagas extra</h3><p>Es la parte proporcional de las pagas extraordinarias repartida entre las nóminas del año, en lugar de cobrarse en momentos concretos.</p></div>
+          <div class="info-card"><h3>Percepciones no salariales</h3><p>Son cantidades que no retribuyen directamente el trabajo, sino que compensan gastos o situaciones concretas, como transporte, dietas u otros conceptos similares.</p></div>
+          <div class="info-card"><h3>Plus transporte</h3><p>Es una cantidad destinada a compensar desplazamientos o transporte, según el supuesto o la regulación aplicable.</p></div>
+          <div class="info-card"><h3>Dietas</h3><p>Son importes destinados a compensar gastos de manutención o estancia derivados del trabajo.</p></div>
+          <div class="info-card"><h3>Deducciones</h3><p>Son las cantidades que se restan del total devengado. Gracias a ellas se obtiene el líquido final que se cobra.</p></div>
+          <div class="info-card"><h3>Contingencias comunes</h3><p>Es una cotización destinada a cubrir situaciones como enfermedad común o jubilación. Se calcula aplicando un porcentaje sobre una base determinada.</p></div>
+          <div class="info-card"><h3>Desempleo</h3><p>Es la cotización vinculada a la protección por desempleo. También se calcula mediante un porcentaje sobre la base correspondiente.</p></div>
+          <div class="info-card"><h3>Formación profesional</h3><p>Es una pequeña cotización que contribuye a financiar acciones de formación profesional.</p></div>
+          <div class="info-card"><h3>IRPF</h3><p>Es la retención a cuenta del Impuesto sobre la Renta de las Personas Físicas. Su porcentaje depende de distintos factores y reduce el importe neto a cobrar.</p></div>
+          <div class="info-card"><h3>Otras deducciones</h3><p>En este campo pueden incluirse anticipos, embargos o cualquier otro descuento adicional que el ejercicio práctico quiera contemplar.</p></div>
+          <div class="info-card"><h3>Base IRPF</h3><p>Es el importe sobre el que se aplica el porcentaje de retención del IRPF en este simulador.</p></div>
+          <div class="info-card"><h3>Total devengado</h3><p>Es la suma de todas las percepciones del trabajador, salariales y no salariales, antes de descontar deducciones.</p></div>
+          <div class="info-card"><h3>Total deducciones</h3><p>Es la suma de todas las cantidades que se restan al total devengado.</p></div>
+          <div class="info-card"><h3>Líquido a percibir</h3><p>Es la cantidad final que recibe el trabajador una vez descontadas todas las deducciones. Es el importe neto.</p></div>
+        </div>
       </div>
     </div>
   </div>
@@ -761,6 +857,15 @@
 
     window.loadSavedPayroll = loadSavedPayroll;
     window.deleteSavedPayroll = deleteSavedPayroll;
+
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById(`tab-${btn.dataset.tab}`).classList.add('active');
+      });
+    });
 
     renderPayroll();
     renderSavedPayrolls();
