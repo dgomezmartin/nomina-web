@@ -3,86 +3,34 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Aula Nómina Pro</title>
+  <title>Simulador de nómina</title>
   <style>
     :root {
-      --bg: #eef4ff;
+      --bg: #f3f6fb;
       --panel: #ffffff;
-      --panel-soft: #f8fbff;
-      --text: #162033;
-      --muted: #5c6b84;
-      --line: #d7e2f1;
+      --line: #d8e2ef;
+      --text: #172033;
+      --muted: #627089;
       --primary: #1d4ed8;
       --primary-2: #2563eb;
       --ok: #166534;
-      --ok-bg: #effcf3;
-      --warn: #9a6700;
-      --warn-bg: #fff8e8;
-      --danger: #b42318;
-      --danger-bg: #fff1f3;
-      --shadow: 0 14px 40px rgba(15, 23, 42, 0.08);
+      --shadow: 0 14px 36px rgba(15, 23, 42, 0.08);
       --radius: 22px;
     }
 
     * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
+
     body {
       margin: 0;
       font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: radial-gradient(circle at top left, rgba(37,99,235,.08), transparent 22%), var(--bg);
+      background: var(--bg);
       color: var(--text);
-      line-height: 1.5;
     }
 
-    .wrap { max-width: 1360px; margin: 0 auto; padding: 0 18px; }
-
-    header {
-      background: linear-gradient(135deg, #0f172a 0%, #1d4ed8 60%, #2563eb 100%);
-      color: white;
-      padding: 28px 0 24px;
-      box-shadow: 0 10px 28px rgba(15,23,42,.18);
-    }
-
-    .hero-top {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      gap: 14px;
-    }
-
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 8px 12px;
-      border-radius: 999px;
-      background: rgba(255,255,255,.14);
-      border: 1px solid rgba(255,255,255,.22);
-      font-weight: 700;
-      font-size: .84rem;
-    }
-
-    h1 {
-      margin: 14px 0 10px;
-      font-size: clamp(2rem, 4.2vw, 3rem);
-      line-height: 1.08;
-      max-width: 900px;
-    }
-
-    header p {
-      max-width: 980px;
-      margin: 0;
-      color: rgba(255,255,255,.94);
-    }
-
-    .layout {
-      max-width: 1360px;
+    .container {
+      max-width: 1100px;
       margin: 0 auto;
-      padding: 22px 18px 40px;
-      display: grid;
-      grid-template-columns: 360px minmax(0,1fr);
-      gap: 20px;
+      padding: 24px 18px 40px;
     }
 
     .panel {
@@ -90,135 +38,192 @@
       border: 1px solid var(--line);
       border-radius: var(--radius);
       box-shadow: var(--shadow);
+      padding: 22px;
+      margin-bottom: 20px;
     }
 
-    .sidebar {
-      position: sticky;
-      top: 16px;
-      align-self: start;
-      padding: 18px;
+    h1, h2, h3 {
+      margin-top: 0;
     }
 
-    .content { display: grid; gap: 20px; }
-    .section { padding: 20px; }
-    .section h2 { margin: 0 0 8px; font-size: 1.32rem; }
-    .lead { color: var(--muted); margin: 0 0 16px; }
-    .subsection { margin-top: 18px; }
+    h1 {
+      font-size: 1.9rem;
+      margin-bottom: 8px;
+    }
+
+    .lead {
+      color: var(--muted);
+      margin-bottom: 18px;
+    }
+
+    .subsection {
+      margin-top: 18px;
+    }
+
     .subsection h3 {
-      margin: 0 0 10px;
       font-size: 1rem;
+      margin-bottom: 10px;
       padding-bottom: 8px;
       border-bottom: 1px solid var(--line);
     }
 
-    .grid-2, .grid-3, .grid-4 { display: grid; gap: 14px; }
-    .grid-2 { grid-template-columns: repeat(2, minmax(0,1fr)); }
-    .grid-3 { grid-template-columns: repeat(3, minmax(0,1fr)); }
-    .grid-4 { grid-template-columns: repeat(4, minmax(0,1fr)); }
+    .grid-2, .grid-3 {
+      display: grid;
+      gap: 14px;
+    }
 
-    .field { display: flex; flex-direction: column; gap: 6px; }
-    label { font-weight: 700; font-size: .93rem; }
-    .help { color: var(--muted); font-size: .84rem; }
+    .grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 
-    input, select, textarea {
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    label {
+      font-size: 0.93rem;
+      font-weight: 700;
+    }
+
+    input, select {
       width: 100%;
+      padding: 12px 13px;
       border: 1px solid #c8d6e8;
       border-radius: 14px;
-      padding: 12px 13px;
       background: white;
       font: inherit;
       color: var(--text);
     }
 
-    textarea { min-height: 96px; resize: vertical; }
-    input:focus, select:focus, textarea:focus {
+    input:focus, select:focus {
       outline: none;
-      border-color: var(--primary);
-      box-shadow: 0 0 0 4px rgba(37,99,235,.1);
+      border-color: var(--primargrid-template-columns: 1fr;, 235, 0.10);
     }
 
-    .notice, .notice-ok, .notice-warn, .notice-danger {
-      border-radius: 18px;
-      padding: 14px 15px;
-      margin-top: 12px;
-      font-size: .94rem;
+    .buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
     }
-    .notice { background: #eaf2ff; border: 1px solid #bfd7ff; }
-    .notice-ok { background: var(--ok-bg); border: 1px solid #b9ebc8; }
-    .notice-warn { background: var(--warn-bg); border: 1px solid #f6d089; }
-    .notice-danger { background: var(--danger-bg); border: 1px solid #f3b6be; }
 
-    .buttons { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
     button {
       border: 0;
       border-radius: 14px;
-      padding: 12px 16px;
-      font: inherit;
-      font-weight: 800;
-      cursor: pointer;
-      transition: transform .15s ease, box-shadow .15s ease;
+  ition: transform .15s ease, box-shadow .15s ease;
     }
-    button:hover { transform: translateY(-1px); }
-    .btn-primary { background: linear-gradient(135deg, var(--primary), var(--primary-2)); color: #fff; box-shadow: 0 10px 22px rgba(37,99,235,.18); }
-    .btn-secondary { background: #e8edf7; color: var(--text); }
-    .btn-outline { background: #fff; color: var(--primary); border: 1px solid var(--primary); }
-    .btn-danger { background: #fff1f2; color: #b42318; border: 1px solid #f3b6be; }
 
-    .mini-grid { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 12px; }
-    .mini-card {
+    button:hover { transform: translateY(-1px); }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--primary-2));
+      color: white;
+      box-shadow: 0 10px 22px rgba(37,99,235,.18);
+    }
+
+    .btn-secondary {
+      background: #e8edf7;
+      color: var(--text);
+    }
+
+    .btn-outline {
+      background: white;
+      color: var(--primary);
+      border: 1px solid var(--primary);
+    }
+
+    .summary {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .summary-card {
       border: 1px solid var(--line);
       border-radius: 18px;
       padding: 15px;
       background: linear-gradient(180deg, #fff, #f9fbff);
     }
-    .mini-card span { display: block; color: var(--muted); font-size: .86rem; margin-bottom: 7px; }
-    .mini-card strong { font-size: 1.2rem; font-variant-numeric: tabular-nums; }
 
-    .tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
-    .tab {
-      padding: 10px 12px;
-      border-radius: 999px;
-      background: #eef4ff;
-      border: 1px solid #d3e1fb;
-      color: var(--primary);
-      font-weight: 800;
-      cursor: pointer;
+    .summary-card span {
+      display: block;
+      color: var(--muted);
+      font-size: .86rem;
+      margin-bottom: 7px;
     }
-    .tab.active { background: var(--primary); color: white; border-color: var(--primary); }
-    .tab-pane { display: none; }
-    .tab-pane.active { display: block; }
+
+    .summary-card strong {
+      font-size: 1.2rem;
+      font-variant-numeric: tabular-nums;
+    }
 
     .payroll {
       border: 1px solid var(--line);
       border-radius: 20px;
       overflow: hidden;
       background: white;
-      margin-top: 16px;
     }
+
     .payroll-header {
-      background: linear-gradient(180deg, #eef5ff, #f8fbff);
+      background: #f7faff;
       border-bottom: 1px solid var(--line);
       padding: 18px;
     }
-    .payroll-meta { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 10px 18px; font-size: .95rem; }
-    .table-wrap { overflow-x: auto; }
-    table { width: 100%; border-collapse: collapse; font-size: .95rem; }
-    th, td { padding: 10px 12px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
-    th { background: #f8fbff; color: #334155; font-size: .88rem; }
-    td.num { text-align: right; font-variant-numeric: tabular-nums; }
-    tfoot td { font-weight: 800; background: #fcfdff; }
 
-    .step-list { display: grid; gap: 10px; }
-    .step { border: 1px solid var(--line); border-radius: 16px; padding: 14px; background: var(--panel-soft); }
-
-    .exercise-card, .saved-card {
-      border: 1px solid var(--line);
-      border-radius: 18px;
-      background: linear-gradient(180deg,#fff,#fbfdff);
-      padding: 16px;
+    .payroll-meta {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px 18px;
+      font-size: .95rem;
     }
 
-    .saved-list { display: grid; gap: 10px; margin-top: 12px; }
+    .table-wrap { overflow-x: auto; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.95rem;
+    }
+
+    th, td {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+    }
+
+    th {
+      background: #f9fbff;
+      color: #334155;
+      font-size: 0.88rem;
+    }
+
+    td.num {
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+    }
+
+    tfoot td {
+      font-weight: 800;
+      background: #fcfdff;
+    }
+
+    .liquido {
+      padding: 16px 18px;
+      background: #f0fdf4;
+      border-top: 1px solid var(--line);
+      font-size: 1.08rem;
+      font-weight: 800;
+      color: var(--ok);
+    }
+
+    .saved-box {
+      margin-top: 12px;
+      display: grid;
+      gap: 10px;
+    }
+
     .saved-item {
       border: 1px solid var(--line);
       border-radius: 14px;
@@ -231,666 +236,67 @@
       flex-wrap: wrap;
     }
 
-    .score-box {
-      border: 1px dashed #d2dced;
-      background: #fbfdff;
-      border-radius: 16px;
-      padding: 14px;
-      margin-top: 14px;
+    .small {
+      color: var(--muted);
+      font-size: .88rem;
     }
 
-    .inline-actions { display: flex; flex-wrap: wrap; gap: 8px; }
-    .small { font-size: .88rem; color: var(--muted); }
-    .code-lite {
-      background: #eff6ff;
-      border-radius: 10px;
-      padding: 10px;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-      color: #1e3a8a;
-      white-space: pre-wrap;
-      font-size: .9rem;
-    }
-
-    @media (max-width: 1180px) {
-      .layout { grid-template-columns: 1fr; }
-      .sidebar { position: static; }
-    }
     @media (max-width: 860px) {
-      .grid-2, .grid-3, .grid-4, .mini-grid, .payroll-meta { grid-template-columns: 1fr; }
+      .grid-2, .grid-3, .summary, .payroll-meta {
+        grid-template-columns: 1fr;
+      }
     }
+
     @media print {
-      header, .sidebar, .tabs, .exercise-card, .saved-card, .buttons, .notice, .notice-ok, .notice-warn, .notice-danger { display: none !important; }
-      .layout { display: block; padding: 0; }
-      .panel { border: 0; box-shadow: none; }
-      .section { padding: 0; }
-    }
-  </style>
-</head>
-<body>
-  <header>
-    <div class="wrap">
-      <div class="hero-top">
-        <div class="badge">Aula Nómina Pro</div>
-        <div class="badge">Lista para compartir por link</div>
-      </div>
-      <h1>Simulador de nómina para alumnos, con autocorrección y guardado en el navegador</h1>
-      <p>
-        Esta versión está pensada para subirla a internet fácilmente. No necesita base de datos. Funciona muy bien para clase, prácticas, tareas y autoevaluación.
-      </p>
-    </div>
-  </header>
-
-  <div class="layout">
-    <aside class="panel sidebar">
-      <h3 style="margin-top:0;">Qué tiene esta versión</h3>
-      <ul class="small" style="padding-left:18px; line-height:1.6;">
-        <li>Modo alumno y modo profesor.</li>
-        <li>Autocorrección de ejercicios.</li>
-        <li>Guardado local en el navegador.</li>
-        <li>Historial de nóminas guardadas.</li>
-        <li>Impresión o PDF.</li>
-        <li>Un solo archivo fácil de subir.</li>
-      </ul>
-
-      <div class="notice-ok">
-        <strong>Bueno para ti ahora:</strong> se puede subir a GitHub Pages o Netlify sin tocar servidores.
-      </div>
-
-      <div class="buttons">
-        <button class="btn-primary" id="btnCalcularSide">Calcular</button>
-        <button class="btn-secondary" id="btnEjemploSide">Cargar ejemplo</button>
-        <button class="btn-outline" id="btnGuardarSide">Guardar nómina</button>
-        <button class="btn-outline" id="btnPDFSide">Imprimir / PDF</button>
-      </div>
-
-      <div class="notice-warn">
-        <strong>Límite importante:</strong> como no hay base de datos, cada alumno guarda sus datos solo en su propio navegador.
+      .buttons, .saved-section { display: none !important; }
+      body { background: white; }
+      .panel { box-shadow: none; border: 0; padding: 0; }
+      .containerjemplo S.L.">
+          </div>
+          <div class="field">
+            <label for="trabajador">Alumno/a</label>
+            <input id="trabajador" value="Alumno/a de prueba">
+          </div>
+          <div class="field">
+            <label for="cursoGrupo">Curso o grupo</label>
+            <input id="cursoGrupo" value="1º Gestión Administrativa">
+          </div>
+          <div class="field">
+            <label for="mes">Mes</label>
+            <select id="mes">
+              <option>Enero</option><option>Febrero</option><option>Marzo</option><option>Abril</option>
+              <option>Mayo</option><option>Junio</option><option>Julio</option><option>Agosto</option>
+              <option selected>Septiembre</option><option>Octubre</option><option>Noviembre</option><option>Diciembre</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="anio">Año</label>
+            <input id="anio" type="number" value="2026">
+          </div>
+          <div class="field">
+            <label for="dias">Días liquidados</label>
+            <input id="dias" type="number" value="30">
+          </div>
+        </div>
       </div>
 
       <div class="subsection">
-        <h3>Pasos para publicarla</h3>
-        <ol class="small" style="padding-left:18px; line-height:1.6;">
-          <li>Crear archivo <strong>index.html</strong>.</li>
-          <li>Pegar este código.</li>
-          <li>Subirlo a GitHub Pages.</li>
-          <li>Compartir el link con tus alumnos.</li>
-        </ol>
+        <h3>Devengos</h3>
+        <div class="grid-3">
+          <div class="field"><label for="salarioBase">Salario base (€)</label><input id="salarioBase" type="number" value="1400"></div>
+          <div class="field"><label for="plusConvenio">Plus convenio (€)</label><input id="plusConvenio" type="number" value="120"></div>
+          <div class="field"><label for="complementos">Complementos (€)</label><input id="complementos" type="number" value="130"></div>
+          <div class="field"><label for="antiguedad">Antigüedad (€)</label><input id="antiguedad" type="number" value="60"></div>
+          <div class="field"><label for="horasExtra">Horas extra (€)</label><input id="horasExtra" type="number" value="0"></div>
+          <div class="field"><label for="pagasExtra">Prorrata pagas extra (€)</label><input id="pagasExtra" type="number" value="200"></div>
+          <div class="field"><label for="plusTransporte">Plus transporte (€)</label><input id="plusTransporte" type="number" value="50"></div>
+          <div class="field"><label for="dietas">Dietas (€)</label><input id="dietas" type="number" value="0"></div>
+          <div class="field"><label for="otrosNoSalariales">Otros no salariales (€)</label><input id="otrosNoSalariales" type="number" value="0"></div>
+        </div>
       </div>
-    </aside>
 
-    <div class="content">
-      <section class="panel section">
-        <h2>Panel principal</h2>
-        <p class="lead">Puedes usar esta web como simulador normal, como actividad guiada o como herramienta de autocorrección.</p>
-
-        <div class="tabs">
-          <button class="tab active" data-tab="simulador">Simulador</button>
-          <button class="tab" data-tab="alumno">Modo alumno</button>
-          <button class="tab" data-tab="profesor">Modo profesor</button>
-          <button class="tab" data-tab="guardadas">Nóminas guardadas</button>
-        </div>
-
-        <div class="tab-pane active" id="tab-simulador">
-          <div class="subsection">
-            <h3>Datos generales</h3>
-            <div class="grid-3">
-              <div class="field">
-                <label for="empresa">Empresa</label>
-                <input id="empresa" value="Empresa Ejemplo S.L.">
-              </div>
-              <div class="field">
-                <label for="trabajador">Trabajador/a</label>
-                <input id="trabajador" value="Alumno/a de prueba">
-              </div>
-              <div class="field">
-                <label for="cursoGrupo">Curso o grupo</label>
-                <input id="cursoGrupo" value="1º Gestión Administrativa">
-              </div>
-              <div class="field">
-                <label for="mes">Mes</label>
-                <select id="mes">
-                  <option>Enero</option><option>Febrero</option><option>Marzo</option><option>Abril</option>
-                  <option>Mayo</option><option>Junio</option><option>Julio</option><option>Agosto</option>
-                  <option selected>Septiembre</option><option>Octubre</option><option>Noviembre</option><option>Diciembre</option>
-                </select>
-              </div>
-              <div class="field">
-                <label for="anio">Año</label>
-                <input id="anio" type="number" value="2026">
-              </div>
-              <div class="field">
-                <label for="dias">Días liquidados</label>
-                <input id="dias" type="number" value="30">
-              </div>
-            </div>
-          </div>
-
-          <div class="subsection">
-            <h3>Devengos</h3>
-            <div class="grid-3">
-              <div class="field"><label for="salarioBase">Salario base (€)</label><input id="salarioBase" type="number" value="1400"></div>
-              <div class="field"><label for="plusConvenio">Plus convenio (€)</label><input id="plusConvenio" type="number" value="120"></div>
-              <div class="field"><label for="complementos">Complementos (€)</label><input id="complementos" type="number" value="130"></div>
-              <div class="field"><label for="antiguedad">Antigüedad (€)</label><input id="antiguedad" type="number" value="60"></div>
-              <div class="field"><label for="horasExtra">Horas extra (€)</label><input id="horasExtra" type="number" value="0"></div>
-              <div class="field"><label for="pagasExtra">Prorrata pagas extra (€)</label><input id="pagasExtra" type="number" value="200"></div>
-              <div class="field"><label for="plusTransporte">Plus transporte (€)</label><input id="plusTransporte" type="number" value="50"></div>
-              <div class="field"><label for="dietas">Dietas (€)</label><input id="dietas" type="number" value="0"></div>
-              <div class="field"><label for="otrosNoSalariales">Otros no salariales (€)</label><input id="otrosNoSalariales" type="number" value="0"></div>
-            </div>
-          </div>
-
-          <div class="subsection">
-            <h3>Deducciones</h3>
-            <div class="grid-3">
-              <div class="field"><label for="cc">Contingencias comunes (%)</label><input id="cc" type="number" step="0.01" value="4.70"></div>
-              <div class="field"><label for="desempleo">Desempleo (%)</label><input id="desempleo" type="number" step="0.01" value="1.55"></div>
-              <div class="field"><label for="formacion">Formación profesional (%)</label><input id="formacion" type="number" step="0.01" value="0.10"></div>
-              <div class="field"><label for="irpf">IRPF (%)</label><input id="irpf" type="number" step="0.01" value="12.00"></div>
-              <div class="field"><label for="heFuerzaMayor">Cotización H.E. fuerza mayor (%)</label><input id="heFuerzaMayor" type="number" step="0.01" value="2.00"></div>
-              <div class="field"><label for="otrasDeducciones">Otras deducciones (€)</label><input id="otrasDeducciones" type="number" value="0"></div>
-            </div>
-          </div>
-
-          <div class="buttons">
-            <button class="btn-primary" id="btnCalcular">Calcular nómina</button>
-            <button class="btn-secondary" id="btnEjemplo">Cargar ejemplo</button>
-            <button class="btn-outline" id="btnGuardar">Guardar nómina</button>
-            <button class="btn-outline" id="btnLimpiar">Limpiar</button>
-            <button class="btn-outline" id="btnPDF">Imprimir / PDF</button>
-          </div>
-
-          <div class="mini-grid" style="margin-top:16px;">
-            <div class="mini-card"><span>Total devengado</span><strong id="resDevengado">0,00 €</strong></div>
-            <div class="mini-card"><span>Total deducciones</span><strong id="resDeducciones">0,00 €</strong></div>
-            <div class="mini-card"><span>Líquido a percibir</span><strong id="resLiquido">0,00 €</strong></div>
-            <div class="mini-card"><span>Base IRPF</span><strong id="resBaseIrpf">0,00 €</strong></div>
-          </div>
-
-          <div class="payroll" id="zonaImpresion">
-            <div class="payroll-header">
-              <div style="font-size:1.12rem;font-weight:800;margin-bottom:10px;">Recibo de salarios</div>
-              <div class="payroll-meta">
-                <div><strong>Empresa:</strong> <span id="outEmpresa">-</span></div>
-                <div><strong>Trabajador/a:</strong> <span id="outTrabajador">-</span></div>
-                <div><strong>Curso / grupo:</strong> <span id="outCurso">-</span></div>
-                <div><strong>Periodo:</strong> <span id="outPeriodo">-</span></div>
-                <div><strong>Días:</strong> <span id="outDias">-</span></div>
-                <div><strong>Documento:</strong> Simulación educativa</div>
-              </div>
-            </div>
-
-            <div class="table-wrap">
-              <table>
-                <thead><tr><th>DEVENGOS</th><th class="num">IMPORTE</th></tr></thead>
-                <tbody>
-                  <tr><td>Salario base</td><td class="num" id="outSalarioBase">0,00 €</td></tr>
-                  <tr><td>Plus convenio</td><td class="num" id="outPlusConvenio">0,00 €</td></tr>
-                  <tr><td>Complementos</td><td class="num" id="outComplementos">0,00 €</td></tr>
-                  <tr><td>Antigüedad</td><td class="num" id="outAntiguedad">0,00 €</td></tr>
-                  <tr><td>Horas extra</td><td class="num" id="outHorasExtra">0,00 €</td></tr>
-                  <tr><td>Prorrata pagas extra</td><td class="num" id="outPagasExtra">0,00 €</td></tr>
-                  <tr><td>Plus transporte</td><td class="num" id="outPlusTransporte">0,00 €</td></tr>
-                  <tr><td>Dietas</td><td class="num" id="outDietas">0,00 €</td></tr>
-                  <tr><td>Otros no salariales</td><td class="num" id="outOtrosNoSalariales">0,00 €</td></tr>
-                </tbody>
-                <tfoot><tr><td>Total devengado</td><td class="num" id="outTotalDevengado">0,00 €</td></tr></tfoot>
-              </table>
-            </div>
-
-            <div class="table-wrap">
-              <table>
-                <thead><tr><th>DEDUCCIONES</th><th class="num">BASE / TIPO</th><th class="num">CUOTA</th></tr></thead>
-                <tbody>
-                  <tr><td>Contingencias comunes</td><td class="num" id="outCcBase">0,00 € x 0%</td><td class="num" id="outCcCuota">0,00 €</td></tr>
-                  <tr><td>Desempleo</td><td class="num" id="outDesempleoBase">0,00 € x 0%</td><td class="num" id="outDesempleoCuota">0,00 €</td></tr>
-                  <tr><td>Formación profesional</td><td class="num" id="outFormacionBase">0,00 € x 0%</td><td class="num" id="outFormacionCuota">0,00 €</td></tr>
-                  <tr><td>IRPF</td><td class="num" id="outIrpfBase">0,00 € x 0%</td><td class="num" id="outIrpfCuota">0,00 €</td></tr>
-                  <tr><td>H.E. fuerza mayor</td><td class="num" id="outHeBase">0,00 € x 0%</td><td class="num" id="outHeCuota">0,00 €</td></tr>
-                  <tr><td>Otras deducciones</td><td class="num">—</td><td class="num" id="outOtrasDeducciones">0,00 €</td></tr>
-                </tbody>
-                <tfoot><tr><td colspan="2">Total deducciones</td><td class="num" id="outTotalDeducciones">0,00 €</td></tr></tfoot>
-              </table>
-            </div>
-
-            <div class="table-wrap">
-              <table>
-                <thead><tr><th>BASES INFORMATIVAS</th><th class="num">IMPORTE</th></tr></thead>
-                <tbody>
-                  <tr><td>Base contingencias comunes</td><td class="num" id="outBaseCC">0,00 €</td></tr>
-                  <tr><td>Base desempleo y formación</td><td class="num" id="outBaseDesempleo">0,00 €</td></tr>
-                  <tr><td>Base sujeta a IRPF</td><td class="num" id="outBaseIrpf">0,00 €</td></tr>
-                </tbody>
-              </table>
-            </div>
-
-            <div style="padding:16px;background:#f0fdf4;border-top:1px solid var(--line);font-weight:800;color:var(--ok);">
-              Líquido total a percibir: <span id="outLiquido">0,00 €</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="tab-pane" id="tab-alumno">
-          <div class="exercise-card">
-            <h3 style="margin-top:0;">Actividad autocorregible</h3>
-            <p id="exerciseText">Pulsa en “Generar ejercicio” para crear una actividad nueva para tus alumnos.</p>
-            <div class="buttons">
-              <button class="btn-secondary" id="btnNewExercise">Generar ejercicio</button>
-              <button class="btn-outline" id="btnLoadExercise">Cargar ejercicio en el simulador</button>
-            </div>
-
-            <div class="grid-2" style="margin-top:14px;">
-              <div class="field">
-                <label for="studentAnswer">Respuesta del alumno: líquido a percibir (€)</label>
-                <input id="studentAnswer" type="number" step="0.01" placeholder="Ejemplo: 1548.33">
-              </div>
-              <div class="field">
-                <label>&nbsp;</label>
-                <button class="btn-primary" id="btnCheckAnswer">Corregir respuesta</button>
-              </div>
-            </div>
-
-            <div class="score-box">
-              <div><strong>Resultado de la corrección:</strong></div>
-              <div id="correctionResult" class="small" style="margin-top:8px;">Todavía no se ha corregido ninguna respuesta.</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="tab-pane" id="tab-profesor">
-          <div class="exercise-card">
-            <h3 style="margin-top:0;">Modo profesor</h3>
-            <p class="lead">Aquí ves el resultado correcto del ejercicio generado, para explicarlo o corregirlo en clase.</p>
-            <div class="grid-2">
-              <div>
-                <div class="small">Solución correcta</div>
-                <div style="font-size:1.5rem;font-weight:800; margin-top:4px;" id="teacherCorrectAmount">0,00 €</div>
-              </div>
-              <div>
-                <div class="small">Fórmula simplificada</div>
-                <div class="code-lite" id="teacherFormula">Genera un ejercicio para ver la solución.</div>
-              </div>
-            </div>
-            <div class="notice">
-              Puedes proyectar esta parte en clase o usarla para preparar soluciones modelo.
-            </div>
-          </div>
-
-          <div class="subsection">
-            <h3>Explicación paso a paso</h3>
-            <div class="step-list" id="stepsBox">
-              <div class="step"><strong>Paso 1.</strong> Genera un ejercicio o calcula una nómina.</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="tab-pane" id="tab-guardadas">
-          <div class="saved-card">
-            <h3 style="margin-top:0;">Nóminas guardadas en este navegador</h3>
-            <p class="lead">Se guardan en el propio navegador del dispositivo. No se suben a internet.</p>
-            <div class="inline-actions">
-              <button class="btn-secondary" id="btnRefreshSaved">Actualizar lista</button>
-              <button class="btn-danger" id="btnDeleteAllSaved">Borrar todas</button>
-            </div>
-            <div class="saved-list" id="savedList">
-              <div class="small">No hay nóminas guardadas todavía.</div>
-            </div>
-          </div>
-        </div>
-      </section>
-    </div>
-  </div>
-
-  <script>
-    const $ = (id) => document.getElementById(id);
-    const STORAGE_KEY = 'aula_nomina_guardadas_v1';
-    let currentExercise = null;
-
-    function money(n) {
-      return (Number(n) || 0).toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €';
-    }
-
-    function num(id) {
-      return Number($(id).value) || 0;
-    }
-
-    function readForm() {
-      return {
-        empresa: $('empresa').value.trim(),
-        trabajador: $('trabajador').value.trim(),
-        cursoGrupo: $('cursoGrupo').value.trim(),
-        mes: $('mes').value,
-        anio: $('anio').value,
-        dias: num('dias'),
-        salarioBase: num('salarioBase'),
-        plusConvenio: num('plusConvenio'),
-        complementos: num('complementos'),
-        antiguedad: num('antiguedad'),
-        horasExtra: num('horasExtra'),
-        pagasExtra: num('pagasExtra'),
-        plusTransporte: num('plusTransporte'),
-        dietas: num('dietas'),
-        otrosNoSalariales: num('otrosNoSalariales'),
-        cc: num('cc'),
-        desempleo: num('desempleo'),
-        formacion: num('formacion'),
-        irpf: num('irpf'),
-        heFuerzaMayor: num('heFuerzaMayor'),
-        otrasDeducciones: num('otrasDeducciones')
-      };
-    }
-
-    function calculatePayroll(data) {
-      const totalSalarial = data.salarioBase + data.plusConvenio + data.complementos + data.antiguedad + data.horasExtra + data.pagasExtra;
-      const totalNoSalarial = data.plusTransporte + data.dietas + data.otrosNoSalariales;
-      const totalDevengado = totalSalarial + totalNoSalarial;
-      const baseCC = data.salarioBase + data.plusConvenio + data.complementos + data.antiguedad + data.pagasExtra;
-      const baseDesempleo = baseCC + data.horasExtra;
-      const baseIrpf = totalSalarial;
-      const cuotaCC = baseCC * data.cc / 100;
-      const cuotaDesempleo = baseDesempleo * data.desempleo / 100;
-      const cuotaFormacion = baseDesempleo * data.formacion / 100;
-      const cuotaIrpf = baseIrpf * data.irpf / 100;
-      const cuotaHe = data.horasExtra * data.heFuerzaMayor / 100;
-      const totalDeducciones = cuotaCC + cuotaDesempleo + cuotaFormacion + cuotaIrpf + cuotaHe + data.otrasDeducciones;
-      const liquido = totalDevengado - totalDeducciones;
-      return {
-        totalSalarial, totalNoSalarial, totalDevengado, baseCC, baseDesempleo, baseIrpf,
-        cuotaCC, cuotaDesempleo, cuotaFormacion, cuotaIrpf, cuotaHe,
-        totalDeducciones, liquido
-      };
-    }
-
-    function renderPayroll() {
-      const data = readForm();
-      const r = calculatePayroll(data);
-
-      $('resDevengado').textContent = money(r.totalDevengado);
-      $('resDeducciones').textContent = money(r.totalDeducciones);
-      $('resLiquido').textContent = money(r.liquido);
-      $('resBaseIrpf').textContent = money(r.baseIrpf);
-
-      $('outEmpresa').textContent = data.empresa || '-';
-      $('outTrabajador').textContent = data.trabajador || '-';
-      $('outCurso').textContent = data.cursoGrupo || '-';
-      $('outPeriodo').textContent = `${data.mes} / ${data.anio}`;
-      $('outDias').textContent = data.dias || '-';
-
-      $('outSalarioBase').textContent = money(data.salarioBase);
-      $('outPlusConvenio').textContent = money(data.plusConvenio);
-      $('outComplementos').textContent = money(data.complementos);
-      $('outAntiguedad').textContent = money(data.antiguedad);
-      $('outHorasExtra').textContent = money(data.horasExtra);
-      $('outPagasExtra').textContent = money(data.pagasExtra);
-      $('outPlusTransporte').textContent = money(data.plusTransporte);
-      $('outDietas').textContent = money(data.dietas);
-      $('outOtrosNoSalariales').textContent = money(data.otrosNoSalariales);
-      $('outTotalDevengado').textContent = money(r.totalDevengado);
-
-      $('outCcBase').textContent = `${money(r.baseCC)} x ${data.cc.toFixed(2)}%`;
-      $('outCcCuota').textContent = money(r.cuotaCC);
-      $('outDesempleoBase').textContent = `${money(r.baseDesempleo)} x ${data.desempleo.toFixed(2)}%`;
-      $('outDesempleoCuota').textContent = money(r.cuotaDesempleo);
-      $('outFormacionBase').textContent = `${money(r.baseDesempleo)} x ${data.formacion.toFixed(2)}%`;
-      $('outFormacionCuota').textContent = money(r.cuotaFormacion);
-      $('outIrpfBase').textContent = `${money(r.baseIrpf)} x ${data.irpf.toFixed(2)}%`;
-      $('outIrpfCuota').textContent = money(r.cuotaIrpf);
-      $('outHeBase').textContent = `${money(data.horasExtra)} x ${data.heFuerzaMayor.toFixed(2)}%`;
-      $('outHeCuota').textContent = money(r.cuotaHe);
-      $('outOtrasDeducciones').textContent = money(data.otrasDeducciones);
-      $('outTotalDeducciones').textContent = money(r.totalDeducciones);
-      $('outBaseCC').textContent = money(r.baseCC);
-      $('outBaseDesempleo').textContent = money(r.baseDesempleo);
-      $('outBaseIrpf').textContent = money(r.baseIrpf);
-      $('outLiquido').textContent = money(r.liquido);
-
-      $('teacherFormula').textContent = `${money(r.totalDevengado)} - ${money(r.totalDeducciones)} = ${money(r.liquido)}`;
-      $('teacherCorrectAmount').textContent = money(r.liquido);
-
-      $('stepsBox').innerHTML = `
-        <div class="step"><strong>Paso 1.</strong> Devengos salariales = ${money(data.salarioBase)} + ${money(data.plusConvenio)} + ${money(data.complementos)} + ${money(data.antiguedad)} + ${money(data.horasExtra)} + ${money(data.pagasExtra)} = <strong>${money(r.totalSalarial)}</strong>.</div>
-        <div class="step"><strong>Paso 2.</strong> Percepciones no salariales = ${money(data.plusTransporte)} + ${money(data.dietas)} + ${money(data.otrosNoSalariales)} = <strong>${money(r.totalNoSalarial)}</strong>.</div>
-        <div class="step"><strong>Paso 3.</strong> Total devengado = salarial + no salarial = <strong>${money(r.totalDevengado)}</strong>.</div>
-        <div class="step"><strong>Paso 4.</strong> Base de contingencias comunes = <strong>${money(r.baseCC)}</strong>. Base de desempleo y formación = <strong>${money(r.baseDesempleo)}</strong>. Base IRPF = <strong>${money(r.baseIrpf)}</strong>.</div>
-        <div class="step"><strong>Paso 5.</strong> Total deducciones = ${money(r.cuotaCC)} + ${money(r.cuotaDesempleo)} + ${money(r.cuotaFormacion)} + ${money(r.cuotaIrpf)} + ${money(r.cuotaHe)} + ${money(data.otrasDeducciones)} = <strong>${money(r.totalDeducciones)}</strong>.</div>
-        <div class="step"><strong>Paso 6.</strong> Líquido a percibir = total devengado - total deducciones = <strong>${money(r.liquido)}</strong>.</div>
-      `;
-
-      return { data, result: r };
-    }
-
-    function loadExample() {
-      $('empresa').value = 'Centro Formativo Laboral S.L.';
-      $('trabajador').value = 'María López García';
-      $('cursoGrupo').value = '1º Gestión Administrativa';
-      $('mes').value = 'Abril';
-      $('anio').value = '2026';
-      $('dias').value = '30';
-      $('salarioBase').value = '1500';
-      $('plusConvenio').value = '100';
-      $('complementos').value = '180';
-      $('antiguedad').value = '70';
-      $('horasExtra').value = '80';
-      $('pagasExtra').value = '250';
-      $('plusTransporte').value = '60';
-      $('dietas').value = '0';
-      $('otrosNoSalariales').value = '0';
-      $('cc').value = '4.70';
-      $('desempleo').value = '1.55';
-      $('formacion').value = '0.10';
-      $('irpf').value = '11.50';
-      $('heFuerzaMayor').value = '2.00';
-      $('otrasDeducciones').value = '0';
-      renderPayroll();
-    }
-
-    function clearForm() {
-      ['empresa','trabajador','cursoGrupo'].forEach(id => $(id).value = '');
-      $('mes').value = 'Enero';
-      $('anio').value = '2026';
-      $('dias').value = '30';
-      ['salarioBase','plusConvenio','complementos','antiguedad','horasExtra','pagasExtra','plusTransporte','dietas','otrosNoSalariales','otrasDeducciones'].forEach(id => $(id).value = '0');
-      $('cc').value = '4.70';
-      $('desempleo').value = '1.55';
-      $('formacion').value = '0.10';
-      $('irpf').value = '12.00';
-      $('heFuerzaMayor').value = '2.00';
-      renderPayroll();
-    }
-
-    function getSavedPayrolls() {
-      try {
-        return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
-      } catch {
-        return [];
-      }
-    }
-
-    function savePayroll() {
-      const payload = renderPayroll();
-      const list = getSavedPayrolls();
-      list.unshift({
-        id: Date.now(),
-        createdAt: new Date().toLocaleString('es-ES'),
-        empresa: payload.data.empresa,
-        trabajador: payload.data.trabajador,
-        periodo: `${payload.data.mes} ${payload.data.anio}`,
-        liquido: payload.result.liquido,
-        data: payload.data
-      });
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(list.slice(0, 20)));
-      renderSavedPayrolls();
-      alert('Nómina guardada en este navegador.');
-    }
-
-    function loadSavedPayroll(id) {
-      const found = getSavedPayrolls().find(item => item.id === id);
-      if (!found) return;
-      Object.entries(found.data).forEach(([key, value]) => {
-        const el = $(key);
-        if (el) el.value = value;
-      });
-      renderPayroll();
-      activateTab('simulador');
-    }
-
-    function deleteSavedPayroll(id) {
-      const filtered = getSavedPayrolls().filter(item => item.id !== id);
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(filtered));
-      renderSavedPayrolls();
-    }
-
-    function deleteAllSavedPayrolls() {
-      localStorage.removeItem(STORAGE_KEY);
-      renderSavedPayrolls();
-    }
-
-    function renderSavedPayrolls() {
-      const list = getSavedPayrolls();
-      const box = $('savedList');
-      if (!list.length) {
-        box.innerHTML = '<div class="small">No hay nóminas guardadas todavía.</div>';
-        return;
-      }
-      box.innerHTML = list.map(item => `
-        <div class="saved-item">
-          <div>
-            <strong>${escapeHtml(item.trabajador || 'Sin nombre')}</strong><br>
-            <span class="small">${escapeHtml(item.empresa || 'Sin empresa')} · ${escapeHtml(item.periodo)} · Guardada el ${escapeHtml(item.createdAt)}</span><br>
-            <span class="small">Líquido: ${money(item.liquido)}</span>
-          </div>
-          <div class="inline-actions">
-            <button class="btn-outline" onclick="loadSavedPayroll(${item.id})">Cargar</button>
-            <button class="btn-danger" onclick="deleteSavedPayroll(${item.id})">Borrar</button>
-          </div>
-        </div>
-      `).join('');
-    }
-
-    function escapeHtml(text) {
-      return String(text)
-        .replaceAll('&', '&amp;')
-        .replaceAll('<', '&lt;')
-        .replaceAll('>', '&gt;')
-        .replaceAll('"', '&quot;')
-        .replaceAll("'", '&#039;');
-    }
-
-    function generateExercise() {
-      const salarioBase = rand(1200, 1700);
-      const plusConvenio = rand(60, 150);
-      const complementos = rand(90, 220);
-      const antiguedad = [0, 30, 45, 60, 75][Math.floor(Math.random() * 5)];
-      const horasExtra = [0, 0, 20, 40, 60][Math.floor(Math.random() * 5)];
-      const pagasExtra = rand(140, 280);
-      const plusTransporte = [0, 40, 50, 60, 75][Math.floor(Math.random() * 5)];
-      const dietas = [0, 0, 15, 20, 30][Math.floor(Math.random() * 5)];
-      const irpf = [6, 8, 10, 12, 14][Math.floor(Math.random() * 5)];
-      currentExercise = {
-        empresa: 'Empresa Aula S.L.',
-        trabajador: 'Alumno/a',
-        cursoGrupo: 'Actividad de clase',
-        mes: 'Mayo',
-        anio: '2026',
-        dias: 30,
-        salarioBase,
-        plusConvenio,
-        complementos,
-        antiguedad,
-        horasExtra,
-        pagasExtra,
-        plusTransporte,
-        dietas,
-        otrosNoSalariales: 0,
-        cc: 4.70,
-        desempleo: 1.55,
-        formacion: 0.10,
-        irpf,
-        heFuerzaMayor: 2.00,
-        otrasDeducciones: 0
-      };
-      const r = calculatePayroll(currentExercise);
-      currentExercise.correctLiquido = r.liquido;
-      $('exerciseText').textContent = `Una persona trabajadora percibe: salario base ${salarioBase} €, plus convenio ${plusConvenio} €, complementos ${complementos} €, antigüedad ${antiguedad} €, horas extra ${horasExtra} €, prorrata de pagas extra ${pagasExtra} €, plus transporte ${plusTransporte} € y dietas ${dietas} €. Aplica CC 4,70 %, desempleo 1,55 %, formación 0,10 % e IRPF ${irpf.toFixed(2)} %. Calcula el líquido a percibir.`;
-      $('teacherCorrectAmount').textContent = money(r.liquido);
-      $('teacherFormula').textContent = `${money(r.totalDevengado)} - ${money(r.totalDeducciones)} = ${money(r.liquido)}`;
-      $('correctionResult').textContent = 'Ejercicio generado. El alumno ya puede responder.';
-    }
-
-    function loadExerciseIntoForm() {
-      if (!currentExercise) {
-        alert('Primero genera un ejercicio.');
-        return;
-      }
-      Object.entries(currentExercise).forEach(([key, value]) => {
-        const el = $(key);
-        if (el) el.value = value;
-      });
-      renderPayroll();
-      activateTab('simulador');
-    }
-
-    function checkStudentAnswer() {
-      if (!currentExercise) {
-        $('correctionResult').textContent = 'Primero debes generar un ejercicio.';
-        return;
-      }
-      const answer = Number($('studentAnswer').value);
-      if (!Number.isFinite(answer)) {
-        $('correctionResult').textContent = 'Escribe una respuesta numérica válida.';
-        return;
-      }
-      const diff = Math.abs(answer - currentExercise.correctLiquido);
-      if (diff < 0.01) {
-        $('correctionResult').innerHTML = `<strong style="color:#166534;">Correcto.</strong> El líquido exacto es ${money(currentExercise.correctLiquido)}.`;
-      } else if (diff <= 2) {
-        $('correctionResult').innerHTML = `<strong style="color:#9a6700;">Muy cerca.</strong> Tu resultado está a ${money(diff)} del valor correcto. Solución: ${money(currentExercise.correctLiquido)}.`;
-      } else {
-        $('correctionResult').innerHTML = `<strong style="color:#b42318;">Incorrecto.</strong> Revisa devengos, deducciones y bases. Solución correcta: ${money(currentExercise.correctLiquido)}.`;
-      }
-    }
-
-    function rand(min, max) {
-      return Math.floor(Math.random() * (max - min + 1)) + min;
-    }
-
-    function activateTab(name) {
-      document.querySelectorAll('.tab').forEach(tab => tab.classList.toggle('active', tab.dataset.tab === name));
-      document.querySelectorAll('.tab-pane').forEach(pane => pane.classList.toggle('active', pane.id === `tab-${name}`));
-    }
-
-    document.querySelectorAll('.tab').forEach(tab => {
-      tab.addEventListener('click', () => activateTab(tab.dataset.tab));
-    });
-
-    $('btnCalcular').addEventListener('click', renderPayroll);
-    $('btnEjemplo').addEventListener('click', loadExample);
-    $('btnGuardar').addEventListener('click', savePayroll);
-    $('btnLimpiar').addEventListener('click', clearForm);
-    $('btnPDF').addEventListener('click', () => window.print());
-
-    $('btnCalcularSide').addEventListener('click', renderPayroll);
-    $('btnEjemploSide').addEventListener('click', loadExample);
-    $('btnGuardarSide').addEventListener('click', savePayroll);
-    $('btnPDFSide').addEventListener('click', () => window.print());
-
-    $('btnNewExercise').addEventListener('click', generateExercise);
-    $('btnLoadExercise').addEventListener('click', loadExerciseIntoForm);
-    $('btnCheckAnswer').addEventListener('click', checkStudentAnswer);
-
-    $('btnRefreshSaved').addEventListener('click', renderSavedPayrolls);
-    $('btnDeleteAllSaved').addEventListener('click', deleteAllSavedPayrolls);
-
-    document.querySelectorAll('input, select').forEach(el => {
-      el.addEventListener('input', renderPayroll);
-    });
-
-    window.loadSavedPayroll = loadSavedPayroll;
-    window.deleteSavedPayroll = deleteSavedPayroll;
-
-    renderPayroll();
-    renderSavedPayrolls();
-    generateExercise();
-  </script>
-</body>
-</html>
+      <div class="subsection">
+        <h3>Deducciones</h3>
+        <div class="grid-3">
+          <div class=rpf"<div class="layout"><h2>Simulador de nómina</h2>
+        <p class="lead">Rellena los datos y pulsa en calcular para obtener la nómina resultante.</p>
