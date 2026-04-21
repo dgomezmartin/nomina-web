@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Simulador de nómina</title>
   <style>
     :root {
@@ -22,7 +22,7 @@
 
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       background: var(--bg);
       color: var(--text);
     }
@@ -83,7 +83,7 @@
 
     label {
       font-size: 0.93rem;
-      font-weight: bold;
+      font-weight: 700;
     }
 
     input, select {
@@ -94,6 +94,12 @@
       background: white;
       font: inherit;
       color: var(--text);
+    }
+
+    input:focus, select:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.10);
     }
 
     .buttons {
@@ -108,13 +114,17 @@
       border-radius: 14px;
       padding: 12px 16px;
       font: inherit;
-      font-weight: bold;
+      font-weight: 800;
       cursor: pointer;
+      transition: transform .15s ease, box-shadow .15s ease;
     }
+
+    button:hover { transform: translateY(-1px); }
 
     .btn-primary {
       background: linear-gradient(135deg, var(--primary), var(--primary-2));
       color: white;
+      box-shadow: 0 10px 22px rgba(37,99,235,.18);
     }
 
     .btn-secondary {
@@ -139,7 +149,7 @@
       border: 1px solid var(--line);
       border-radius: 18px;
       padding: 15px;
-      background: #fff;
+      background: linear-gradient(180deg, #fff, #f9fbff);
     }
 
     .summary-card span {
@@ -151,6 +161,7 @@
 
     .summary-card strong {
       font-size: 1.2rem;
+      font-variant-numeric: tabular-nums;
     }
 
     .payroll {
@@ -173,6 +184,8 @@
       font-size: .95rem;
     }
 
+    .table-wrap { overflow-x: auto; }
+
     table {
       width: 100%;
       border-collapse: collapse;
@@ -193,10 +206,11 @@
 
     td.num {
       text-align: right;
+      font-variant-numeric: tabular-nums;
     }
 
     tfoot td {
-      font-weight: bold;
+      font-weight: 800;
       background: #fcfdff;
     }
 
@@ -205,7 +219,7 @@
       background: #f0fdf4;
       border-top: 1px solid var(--line);
       font-size: 1.08rem;
-      font-weight: bold;
+      font-weight: 800;
       color: var(--ok);
     }
 
@@ -239,7 +253,26 @@
     }
 
     @media print {
-      .buttons, .saved-section { display: none !important; }
+      .buttons, .saved-section, .lead, h1 { display: none !important; }
+      body { background: white; }
+      .panel { box-shadow: none; border: 0; padding: 0; margin: 0; }
+      .container { max-width: 100%; padding: 0; }
+      .screen-sheet { display: none !important; }
+      .print-sheet { display: block !important; }
+      .payroll {
+        border: 1px solid #444;
+        border-radius: 0;
+      }
+      table { font-size: 12px; }
+      th, td {
+        border: 1px solid #555;
+        padding: 6px 8px;
+      }
+      th {
+        background: #c9c9c9 !important;
+        color: #111;
+      }
+    }
       body { background: white; }
       .panel { box-shadow: none; border: 0; padding: 0; }
       .container { padding: 0; }
@@ -331,57 +364,126 @@
       </div>
 
       <div class="payroll" id="zonaImpresion">
-        <div class="payroll-header">
-          <div style="font-size:1.12rem;font-weight:800;margin-bottom:10px;">Recibo de salarios</div>
-          <div class="payroll-meta">
-            <div><strong>Empresa:</strong> <span id="outEmpresa">-</span></div>
-            <div><strong>Alumno/a:</strong> <span id="outTrabajador">-</span></div>
-            <div><strong>Curso / grupo:</strong> <span id="outCurso">-</span></div>
-            <div><strong>Periodo:</strong> <span id="outPeriodo">-</span></div>
-            <div><strong>Días:</strong> <span id="outDias">-</span></div>
-            <div><strong>Documento:</strong> Simulación educativa</div>
+        <div class="screen-sheet">
+          <div class="payroll-header">
+            <div style="font-size:1.12rem;font-weight:800;margin-bottom:10px;">Recibo de salarios</div>
+            <div class="payroll-meta">
+              <div><strong>Empresa:</strong> <span id="outEmpresa">-</span></div>
+              <div><strong>Alumno/a:</strong> <span id="outTrabajador">-</span></div>
+              <div><strong>Curso / grupo:</strong> <span id="outCurso">-</span></div>
+              <div><strong>Periodo:</strong> <span id="outPeriodo">-</span></div>
+              <div><strong>Días:</strong> <span id="outDias">-</span></div>
+              <div><strong>Documento:</strong> Simulación educativa</div>
+            </div>
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>CONCEPTO</th><th class="num">IMPORTE</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Salario base</td><td class="num" id="outSalarioBase">0,00 €</td></tr>
+                <tr><td>Plus convenio</td><td class="num" id="outPlusConvenio">0,00 €</td></tr>
+                <tr><td>Complementos</td><td class="num" id="outComplementos">0,00 €</td></tr>
+                <tr><td>Antigüedad</td><td class="num" id="outAntiguedad">0,00 €</td></tr>
+                <tr><td>Horas extra</td><td class="num" id="outHorasExtra">0,00 €</td></tr>
+                <tr><td>Prorrata pagas extra</td><td class="num" id="outPagasExtra">0,00 €</td></tr>
+                <tr><td>Plus transporte</td><td class="num" id="outPlusTransporte">0,00 €</td></tr>
+                <tr><td>Dietas</td><td class="num" id="outDietas">0,00 €</td></tr>
+                <tr><td>Otros no salariales</td><td class="num" id="outOtrosNoSalariales">0,00 €</td></tr>
+              </tbody>
+              <tfoot>
+                <tr><td>Total devengado</td><td class="num" id="outTotalDevengado">0,00 €</td></tr>
+              </tfoot>
+            </table>
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>DEDUCCIONES</th><th class="num">IMPORTE</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Contingencias comunes</td><td class="num" id="outCcCuota">0,00 €</td></tr>
+                <tr><td>Desempleo</td><td class="num" id="outDesempleoCuota">0,00 €</td></tr>
+                <tr><td>Formación profesional</td><td class="num" id="outFormacionCuota">0,00 €</td></tr>
+                <tr><td>IRPF</td><td class="num" id="outIrpfCuota">0,00 €</td></tr>
+                <tr><td>H.E. fuerza mayor</td><td class="num" id="outHeCuota">0,00 €</td></tr>
+                <tr><td>Otras deducciones</td><td class="num" id="outOtrasDeducciones">0,00 €</td></tr>
+              </tbody>
+              <tfoot>
+                <tr><td>Total deducciones</td><td class="num" id="outTotalDeducciones">0,00 €</td></tr>
+              </tfoot>
+            </table>
+          </div>
+
+          <div class="liquido">
+            Líquido total a percibir: <span id="outLiquido">0,00 €</span>
           </div>
         </div>
 
-        <table>
-          <thead>
-            <tr><th>CONCEPTO</th><th class="num">IMPORTE</th></tr>
-          </thead>
-          <tbody>
-            <tr><td>Salario base</td><td class="num" id="outSalarioBase">0,00 €</td></tr>
-            <tr><td>Plus convenio</td><td class="num" id="outPlusConvenio">0,00 €</td></tr>
-            <tr><td>Complementos</td><td class="num" id="outComplementos">0,00 €</td></tr>
-            <tr><td>Antigüedad</td><td class="num" id="outAntiguedad">0,00 €</td></tr>
-            <tr><td>Horas extra</td><td class="num" id="outHorasExtra">0,00 €</td></tr>
-            <tr><td>Prorrata pagas extra</td><td class="num" id="outPagasExtra">0,00 €</td></tr>
-            <tr><td>Plus transporte</td><td class="num" id="outPlusTransporte">0,00 €</td></tr>
-            <tr><td>Dietas</td><td class="num" id="outDietas">0,00 €</td></tr>
-            <tr><td>Otros no salariales</td><td class="num" id="outOtrosNoSalariales">0,00 €</td></tr>
-          </tbody>
-          <tfoot>
-            <tr><td>Total devengado</td><td class="num" id="outTotalDevengado">0,00 €</td></tr>
-          </tfoot>
-        </table>
+        <div class="print-sheet" style="display:none; padding:12px; background:white;">
+          <table>
+            <tr>
+              <td colspan="2"><strong>EMPRESA:</strong> <span id="printEmpresa">-</span></td>
+              <td><strong>CURSO / GRUPO:</strong> <span id="printCurso">-</span></td>
+              <td><strong>DÍAS:</strong> <span id="printDias">-</span></td>
+            </tr>
+          </table>
 
-        <table>
-          <thead>
-            <tr><th>DEDUCCIONES</th><th class="num">IMPORTE</th></tr>
-          </thead>
-          <tbody>
-            <tr><td>Contingencias comunes</td><td class="num" id="outCcCuota">0,00 €</td></tr>
-            <tr><td>Desempleo</td><td class="num" id="outDesempleoCuota">0,00 €</td></tr>
-            <tr><td>Formación profesional</td><td class="num" id="outFormacionCuota">0,00 €</td></tr>
-            <tr><td>IRPF</td><td class="num" id="outIrpfCuota">0,00 €</td></tr>
-            <tr><td>H.E. fuerza mayor</td><td class="num" id="outHeCuota">0,00 €</td></tr>
-            <tr><td>Otras deducciones</td><td class="num" id="outOtrasDeducciones">0,00 €</td></tr>
-          </tbody>
-          <tfoot>
-            <tr><td>Total deducciones</td><td class="num" id="outTotalDeducciones">0,00 €</td></tr>
-          </tfoot>
-        </table>
+          <table>
+            <tr>
+              <th>ALUMNO/A</th>
+              <th>PERIODO</th>
+              <th>BASE IRPF</th>
+              <th>LÍQUIDO</th>
+            </tr>
+            <tr>
+              <td id="printTrabajador">-</td>
+              <td id="printPeriodo">-</td>
+              <td class="num" id="printBaseIrpf">0,00 €</td>
+              <td class="num" id="printLiquido">0,00 €</td>
+            </tr>
+          </table>
 
-        <div class="liquido">
-          Líquido total a percibir: <span id="outLiquido">0,00 €</span>
+          <table>
+            <tr>
+              <th>CUANTÍA</th>
+              <th>PRECIO</th>
+              <th>CONCEPTO</th>
+              <th>DEVENGOS</th>
+              <th>DEDUCCIONES</th>
+            </tr>
+            <tr><td class="num">1</td><td class="num" id="p1">0,00 €</td><td>Salario base</td><td class="num" id="d1">0,00 €</td><td></td></tr>
+            <tr><td class="num">1</td><td class="num" id="p2">0,00 €</td><td>Plus convenio</td><td class="num" id="d2">0,00 €</td><td></td></tr>
+            <tr><td class="num">1</td><td class="num" id="p3">0,00 €</td><td>Complementos</td><td class="num" id="d3">0,00 €</td><td></td></tr>
+            <tr><td class="num">1</td><td class="num" id="p4">0,00 €</td><td>Antigüedad</td><td class="num" id="d4">0,00 €</td><td></td></tr>
+            <tr><td class="num">1</td><td class="num" id="p5">0,00 €</td><td>Prorrata pagas extra</td><td class="num" id="d5">0,00 €</td><td></td></tr>
+            <tr><td class="num">1</td><td class="num" id="p6">0,00 €</td><td>Plus transporte</td><td class="num" id="d6">0,00 €</td><td></td></tr>
+            <tr><td class="num">1</td><td class="num" id="p7">0,00 €</td><td>Dietas</td><td class="num" id="d7">0,00 €</td><td></td></tr>
+            <tr><td class="num">1</td><td class="num" id="p8">0,00 €</td><td>Otros no salariales</td><td class="num" id="d8">0,00 €</td><td></td></tr>
+            <tr><td class="num">1</td><td class="num" id="p9">0,00 €</td><td>Horas extra</td><td class="num" id="d9">0,00 €</td><td></td></tr>
+            <tr><td></td><td></td><td>Cotización contingencias comunes</td><td></td><td class="num" id="dd1">0,00 €</td></tr>
+            <tr><td></td><td></td><td>Cotización desempleo</td><td></td><td class="num" id="dd2">0,00 €</td></tr>
+            <tr><td></td><td></td><td>Cotización formación profesional</td><td></td><td class="num" id="dd3">0,00 €</td></tr>
+            <tr><td></td><td></td><td>Tributación IRPF</td><td></td><td class="num" id="dd4">0,00 €</td></tr>
+            <tr><td></td><td></td><td>Horas extra fuerza mayor</td><td></td><td class="num" id="dd5">0,00 €</td></tr>
+            <tr><td></td><td></td><td>Otras deducciones</td><td></td><td class="num" id="dd6">0,00 €</td></tr>
+          </table>
+
+          <table>
+            <tr>
+              <th>T. DEVENGADO</th>
+              <th>T. A DEDUCIR</th>
+              <th>LÍQUIDO A PERCIBIR</th>
+            </tr>
+            <tr>
+              <td class="num" id="printTotalDevengado">0,00 €</td>
+              <td class="num" id="printTotalDeducciones">0,00 €</td>
+              <td class="num" id="printLiquidoBottom">0,00 €</td>
+            </tr>
+          </table>
         </div>
       </div>
     </div>
@@ -404,10 +506,7 @@
     const STORAGE_KEY = 'nominas_alumno_guardadas_v1';
 
     function money(n) {
-      return (Number(n) || 0).toLocaleString('es-ES', {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-      }) + ' €';
+      return (Number(n) || 0).toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €';
     }
 
     function num(id) {
@@ -454,7 +553,6 @@
       const cuotaHe = data.horasExtra * data.heFuerzaMayor / 100;
       const totalDeducciones = cuotaCC + cuotaDesempleo + cuotaFormacion + cuotaIrpf + cuotaHe + data.otrasDeducciones;
       const liquido = totalDevengado - totalDeducciones;
-
       return {
         totalDevengado,
         baseIrpf,
@@ -502,6 +600,33 @@
       $('outOtrasDeducciones').textContent = money(data.otrasDeducciones);
       $('outTotalDeducciones').textContent = money(r.totalDeducciones);
       $('outLiquido').textContent = money(r.liquido);
+
+      $('printEmpresa').textContent = data.empresa || '-';
+      $('printTrabajador').textContent = data.trabajador || '-';
+      $('printCurso').textContent = data.cursoGrupo || '-';
+      $('printPeriodo').textContent = `${data.mes} ${data.anio}`;
+      $('printDias').textContent = data.dias || '-';
+      $('printBaseIrpf').textContent = money(r.baseIrpf);
+      $('printLiquido').textContent = money(r.liquido);
+      $('printTotalDevengado').textContent = money(r.totalDevengado);
+      $('printTotalDeducciones').textContent = money(r.totalDeducciones);
+      $('printLiquidoBottom').textContent = money(r.liquido);
+
+      $('p1').textContent = money(data.salarioBase); $('d1').textContent = money(data.salarioBase);
+      $('p2').textContent = money(data.plusConvenio); $('d2').textContent = money(data.plusConvenio);
+      $('p3').textContent = money(data.complementos); $('d3').textContent = money(data.complementos);
+      $('p4').textContent = money(data.antiguedad); $('d4').textContent = money(data.antiguedad);
+      $('p5').textContent = money(data.pagasExtra); $('d5').textContent = money(data.pagasExtra);
+      $('p6').textContent = money(data.plusTransporte); $('d6').textContent = money(data.plusTransporte);
+      $('p7').textContent = money(data.dietas); $('d7').textContent = money(data.dietas);
+      $('p8').textContent = money(data.otrosNoSalariales); $('d8').textContent = money(data.otrosNoSalariales);
+      $('p9').textContent = money(data.horasExtra); $('d9').textContent = money(data.horasExtra);
+      $('dd1').textContent = money(r.cuotaCC);
+      $('dd2').textContent = money(r.cuotaDesempleo);
+      $('dd3').textContent = money(r.cuotaFormacion);
+      $('dd4').textContent = money(r.cuotaIrpf);
+      $('dd5').textContent = money(r.cuotaHe);
+      $('dd6').textContent = money(data.otrasDeducciones);
 
       return { data, result: r };
     }
@@ -596,7 +721,7 @@
         .replaceAll('&', '&amp;')
         .replaceAll('<', '&lt;')
         .replaceAll('>', '&gt;')
-        .replaceAll('\"', '&quot;')
+        .replaceAll('"', '&quot;')
         .replaceAll("'", '&#039;');
     }
 
