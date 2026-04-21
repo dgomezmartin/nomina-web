@@ -182,7 +182,9 @@
       font-size: .95rem;
     }
 
-    .table-wrap { overflow-x: auto; }
+    .table-wrap {
+      overflow-x: auto;
+    }
 
     table {
       width: 100%;
@@ -217,9 +219,13 @@
       padding: 16px 18px;
       background: #f0fdf4;
       border-top: 1px solid var(--line);
-      font-size: 1.08rem;
+      font-size: 1.02rem;
       font-weight: 800;
       color: var(--ok);
+    }
+
+    .payroll tbody tr:hover {
+      background: #f8fbff;
     }
 
     .tabs {
@@ -470,21 +476,26 @@
             <div class="table-wrap">
               <table>
                 <thead>
-                  <tr><th>CONCEPTO</th><th class="num">IMPORTE</th></tr>
+                  <tr>
+                    <th style="width:52%;">DEVENGOS</th>
+                    <th class="num" style="width:16%;">UNIDADES</th>
+                    <th class="num" style="width:16%;">PRECIO</th>
+                    <th class="num" style="width:16%;">IMPORTE</th>
+                  </tr>
                 </thead>
                 <tbody>
-                  <tr><td>Salario base</td><td class="num" id="outSalarioBase">0,00 €</td></tr>
-                  <tr><td>Plus convenio</td><td class="num" id="outPlusConvenio">0,00 €</td></tr>
-                  <tr><td>Complementos</td><td class="num" id="outComplementos">0,00 €</td></tr>
-                  <tr><td>Antigüedad</td><td class="num" id="outAntiguedad">0,00 €</td></tr>
-                  <tr><td>Horas extra</td><td class="num" id="outHorasExtra">0,00 €</td></tr>
-                  <tr><td>Prorrata pagas extra</td><td class="num" id="outPagasExtra">0,00 €</td></tr>
-                  <tr><td>Plus transporte</td><td class="num" id="outPlusTransporte">0,00 €</td></tr>
-                  <tr><td>Dietas</td><td class="num" id="outDietas">0,00 €</td></tr>
-                  <tr><td>Otros no salariales</td><td class="num" id="outOtrosNoSalariales">0,00 €</td></tr>
+                  <tr><td>Salario base</td><td class="num" id="outUnidadesSalarioBase">30</td><td class="num" id="outPrecioSalarioBase">0,00 €</td><td class="num" id="outSalarioBase">0,00 €</td></tr>
+                  <tr><td>Plus convenio</td><td class="num">1</td><td class="num" id="outPrecioPlusConvenio">0,00 €</td><td class="num" id="outPlusConvenio">0,00 €</td></tr>
+                  <tr><td>Complementos salariales</td><td class="num">1</td><td class="num" id="outPrecioComplementos">0,00 €</td><td class="num" id="outComplementos">0,00 €</td></tr>
+                  <tr><td>Antigüedad</td><td class="num">1</td><td class="num" id="outPrecioAntiguedad">0,00 €</td><td class="num" id="outAntiguedad">0,00 €</td></tr>
+                  <tr><td>Horas extraordinarias</td><td class="num">1</td><td class="num" id="outPrecioHorasExtra">0,00 €</td><td class="num" id="outHorasExtra">0,00 €</td></tr>
+                  <tr><td>Prorrata pagas extraordinarias</td><td class="num">1</td><td class="num" id="outPrecioPagasExtra">0,00 €</td><td class="num" id="outPagasExtra">0,00 €</td></tr>
+                  <tr><td>Plus transporte</td><td class="num">1</td><td class="num" id="outPrecioPlusTransporte">0,00 €</td><td class="num" id="outPlusTransporte">0,00 €</td></tr>
+                  <tr><td>Dietas</td><td class="num">1</td><td class="num" id="outPrecioDietas">0,00 €</td><td class="num" id="outDietas">0,00 €</td></tr>
+                  <tr><td>Otros no salariales</td><td class="num">1</td><td class="num" id="outPrecioOtrosNoSalariales">0,00 €</td><td class="num" id="outOtrosNoSalariales">0,00 €</td></tr>
                 </tbody>
                 <tfoot>
-                  <tr><td>Total devengado</td><td class="num" id="outTotalDevengado">0,00 €</td></tr>
+                  <tr><td colspan="3">TOTAL DEVENGADO</td><td class="num" id="outTotalDevengado">0,00 €</td></tr>
                 </tfoot>
               </table>
             </div>
@@ -492,24 +503,32 @@
             <div class="table-wrap">
               <table>
                 <thead>
-                  <tr><th>DEDUCCIONES</th><th class="num">IMPORTE</th></tr>
+                  <tr>
+                    <th style="width:52%;">DEDUCCIONES</th>
+                    <th class="num" style="width:16%;">BASE</th>
+                    <th class="num" style="width:16%;">TIPO</th>
+                    <th class="num" style="width:16%;">IMPORTE</th>
+                  </tr>
                 </thead>
                 <tbody>
-                  <tr><td>Contingencias comunes</td><td class="num" id="outCcCuota">0,00 €</td></tr>
-                  <tr><td>Desempleo</td><td class="num" id="outDesempleoCuota">0,00 €</td></tr>
-                  <tr><td>Formación profesional</td><td class="num" id="outFormacionCuota">0,00 €</td></tr>
-                  <tr><td>IRPF</td><td class="num" id="outIrpfCuota">0,00 €</td></tr>
-                  <tr><td>H.E. fuerza mayor</td><td class="num" id="outHeCuota">0,00 €</td></tr>
-                  <tr><td>Otras deducciones</td><td class="num" id="outOtrasDeducciones">0,00 €</td></tr>
+                  <tr><td>Contingencias comunes</td><td class="num" id="outBaseCc">0,00 €</td><td class="num" id="outPctCc">0,00 %</td><td class="num" id="outCcCuota">0,00 €</td></tr>
+                  <tr><td>Desempleo</td><td class="num" id="outBaseDesempleo">0,00 €</td><td class="num" id="outPctDesempleo">0,00 %</td><td class="num" id="outDesempleoCuota">0,00 €</td></tr>
+                  <tr><td>Formación profesional</td><td class="num" id="outBaseFormacion">0,00 €</td><td class="num" id="outPctFormacion">0,00 %</td><td class="num" id="outFormacionCuota">0,00 €</td></tr>
+                  <tr><td>IRPF</td><td class="num" id="outBaseIrpfTabla">0,00 €</td><td class="num" id="outPctIrpf">0,00 %</td><td class="num" id="outIrpfCuota">0,00 €</td></tr>
+                  <tr><td>Horas extra fuerza mayor</td><td class="num" id="outBaseHe">0,00 €</td><td class="num" id="outPctHe">0,00 %</td><td class="num" id="outHeCuota">0,00 €</td></tr>
+                  <tr><td>Otras deducciones</td><td class="num">—</td><td class="num">—</td><td class="num" id="outOtrasDeducciones">0,00 €</td></tr>
                 </tbody>
                 <tfoot>
-                  <tr><td>Total deducciones</td><td class="num" id="outTotalDeducciones">0,00 €</td></tr>
+                  <tr><td colspan="3">TOTAL A DEDUCIR</td><td class="num" id="outTotalDeducciones">0,00 €</td></tr>
                 </tfoot>
               </table>
             </div>
 
             <div class="liquido">
-              Líquido total a percibir: <span id="outLiquido">0,00 €</span>
+              <div style="display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap;">
+                <span>BASE SUJETA A IRPF: <strong id="outBaseIrpfResumen">0,00 €</strong></span>
+                <span>LÍQUIDO TOTAL A PERCIBIR: <strong id="outLiquido">0,00 €</strong></span>
+              </div>
             </div>
           </div>
 
@@ -870,6 +889,8 @@
       return {
         totalDevengado,
         baseIrpf,
+        baseCC,
+        baseDesempleo,
         cuotaCC,
         cuotaDesempleo,
         cuotaFormacion,
@@ -906,6 +927,7 @@
       $('outPeriodo').textContent = `${data.mes} / ${data.anio}`;
       $('outDias').textContent = data.dias || '-';
 
+      $('outUnidadesSalarioBase').textContent = data.dias || 0;
       $('outSalarioBase').textContent = money(data.salarioBase);
       $('outPlusConvenio').textContent = money(data.plusConvenio);
       $('outComplementos').textContent = money(data.complementos);
@@ -917,6 +939,16 @@
       $('outOtrosNoSalariales').textContent = money(data.otrosNoSalariales);
       $('outTotalDevengado').textContent = money(r.totalDevengado);
 
+      $('outPrecioSalarioBase').textContent = money(data.dias ? data.salarioBase / data.dias : data.salarioBase);
+      $('outPrecioPlusConvenio').textContent = money(data.plusConvenio);
+      $('outPrecioComplementos').textContent = money(data.complementos);
+      $('outPrecioAntiguedad').textContent = money(data.antiguedad);
+      $('outPrecioHorasExtra').textContent = money(data.horasExtra);
+      $('outPrecioPagasExtra').textContent = money(data.pagasExtra);
+      $('outPrecioPlusTransporte').textContent = money(data.plusTransporte);
+      $('outPrecioDietas').textContent = money(data.dietas);
+      $('outPrecioOtrosNoSalariales').textContent = money(data.otrosNoSalariales);
+
       $('outCcCuota').textContent = money(r.cuotaCC);
       $('outDesempleoCuota').textContent = money(r.cuotaDesempleo);
       $('outFormacionCuota').textContent = money(r.cuotaFormacion);
@@ -925,6 +957,18 @@
       $('outOtrasDeducciones').textContent = money(data.otrasDeducciones);
       $('outTotalDeducciones').textContent = money(r.totalDeducciones);
       $('outLiquido').textContent = money(r.liquido);
+
+      $('outBaseCc').textContent = money(r.baseCC);
+      $('outBaseDesempleo').textContent = money(r.baseDesempleo);
+      $('outBaseFormacion').textContent = money(r.baseDesempleo);
+      $('outBaseIrpfTabla').textContent = money(r.baseIrpf);
+      $('outBaseHe').textContent = money(data.horasExtra);
+      $('outPctCc').textContent = `${data.cc.toFixed(2)} %`;
+      $('outPctDesempleo').textContent = `${data.desempleo.toFixed(2)} %`;
+      $('outPctFormacion').textContent = `${data.formacion.toFixed(2)} %`;
+      $('outPctIrpf').textContent = `${data.irpf.toFixed(2)} %`;
+      $('outPctHe').textContent = `${data.heFuerzaMayor.toFixed(2)} %`;
+      $('outBaseIrpfResumen').textContent = money(r.baseIrpf);
 
       $('printEmpresa').textContent = data.empresa || '-';
       $('printCif').textContent = data.cif || '-';
