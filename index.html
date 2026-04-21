@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Simulador de nómina</title>
   <style>
     :root {
@@ -22,7 +22,7 @@
 
     body {
       margin: 0;
-      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-family: Arial, sans-serif;
       background: var(--bg);
       color: var(--text);
     }
@@ -83,7 +83,7 @@
 
     label {
       font-size: 0.93rem;
-      font-weight: 700;
+      font-weight: bold;
     }
 
     input, select {
@@ -96,11 +96,6 @@
       color: var(--text);
     }
 
-    input:focus, select:focus {
-      outline: none;
-      border-color: var(--primargrid-template-columns: 1fr;, 235, 0.10);
-    }
-
     .buttons {
       display: flex;
       flex-wrap: wrap;
@@ -111,15 +106,15 @@
     button {
       border: 0;
       border-radius: 14px;
-  ition: transform .15s ease, box-shadow .15s ease;
+      padding: 12px 16px;
+      font: inherit;
+      font-weight: bold;
+      cursor: pointer;
     }
-
-    button:hover { transform: translateY(-1px); }
 
     .btn-primary {
       background: linear-gradient(135deg, var(--primary), var(--primary-2));
       color: white;
-      box-shadow: 0 10px 22px rgba(37,99,235,.18);
     }
 
     .btn-secondary {
@@ -144,7 +139,7 @@
       border: 1px solid var(--line);
       border-radius: 18px;
       padding: 15px;
-      background: linear-gradient(180deg, #fff, #f9fbff);
+      background: #fff;
     }
 
     .summary-card span {
@@ -156,7 +151,6 @@
 
     .summary-card strong {
       font-size: 1.2rem;
-      font-variant-numeric: tabular-nums;
     }
 
     .payroll {
@@ -179,8 +173,6 @@
       font-size: .95rem;
     }
 
-    .table-wrap { overflow-x: auto; }
-
     table {
       width: 100%;
       border-collapse: collapse;
@@ -201,11 +193,10 @@
 
     td.num {
       text-align: right;
-      font-variant-numeric: tabular-nums;
     }
 
     tfoot td {
-      font-weight: 800;
+      font-weight: bold;
       background: #fcfdff;
     }
 
@@ -214,7 +205,7 @@
       background: #f0fdf4;
       border-top: 1px solid var(--line);
       font-size: 1.08rem;
-      font-weight: 800;
+      font-weight: bold;
       color: var(--ok);
     }
 
@@ -251,7 +242,22 @@
       .buttons, .saved-section { display: none !important; }
       body { background: white; }
       .panel { box-shadow: none; border: 0; padding: 0; }
-      .containerjemplo S.L.">
+      .container { padding: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="panel">
+      <h1>Simulador de nómina</h1>
+      <p class="lead">Introduce los datos y pulsa en calcular para generar la nómina.</p>
+
+      <div class="subsection">
+        <h3>Datos generales</h3>
+        <div class="grid-3">
+          <div class="field">
+            <label for="empresa">Empresa</label>
+            <input id="empresa" value="Empresa Ejemplo S.L.">
           </div>
           <div class="field">
             <label for="trabajador">Alumno/a</label>
@@ -298,5 +304,341 @@
       <div class="subsection">
         <h3>Deducciones</h3>
         <div class="grid-3">
-          <div class=rpf"<div class="layout"><h2>Simulador de nómina</h2>
-        <p class="lead">Rellena los datos y pulsa en calcular para obtener la nómina resultante.</p>
+          <div class="field"><label for="cc">Contingencias comunes (%)</label><input id="cc" type="number" step="0.01" value="4.70"></div>
+          <div class="field"><label for="desempleo">Desempleo (%)</label><input id="desempleo" type="number" step="0.01" value="1.55"></div>
+          <div class="field"><label for="formacion">Formación profesional (%)</label><input id="formacion" type="number" step="0.01" value="0.10"></div>
+          <div class="field"><label for="irpf">IRPF (%)</label><input id="irpf" type="number" step="0.01" value="12.00"></div>
+          <div class="field"><label for="heFuerzaMayor">Cotización H.E. fuerza mayor (%)</label><input id="heFuerzaMayor" type="number" step="0.01" value="2.00"></div>
+          <div class="field"><label for="otrasDeducciones">Otras deducciones (€)</label><input id="otrasDeducciones" type="number" value="0"></div>
+        </div>
+      </div>
+
+      <div class="buttons">
+        <button class="btn-primary" id="btnCalcular">Calcular nómina</button>
+        <button class="btn-secondary" id="btnEjemplo">Cargar ejemplo</button>
+        <button class="btn-outline" id="btnGuardar">Guardar nómina</button>
+        <button class="btn-outline" id="btnLimpiar">Limpiar</button>
+        <button class="btn-outline" id="btnPDF">Imprimir / PDF</button>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="summary">
+        <div class="summary-card"><span>Total devengado</span><strong id="resDevengado">0,00 €</strong></div>
+        <div class="summary-card"><span>Total deducciones</span><strong id="resDeducciones">0,00 €</strong></div>
+        <div class="summary-card"><span>Líquido a percibir</span><strong id="resLiquido">0,00 €</strong></div>
+        <div class="summary-card"><span>Base IRPF</span><strong id="resBaseIrpf">0,00 €</strong></div>
+      </div>
+
+      <div class="payroll" id="zonaImpresion">
+        <div class="payroll-header">
+          <div style="font-size:1.12rem;font-weight:800;margin-bottom:10px;">Recibo de salarios</div>
+          <div class="payroll-meta">
+            <div><strong>Empresa:</strong> <span id="outEmpresa">-</span></div>
+            <div><strong>Alumno/a:</strong> <span id="outTrabajador">-</span></div>
+            <div><strong>Curso / grupo:</strong> <span id="outCurso">-</span></div>
+            <div><strong>Periodo:</strong> <span id="outPeriodo">-</span></div>
+            <div><strong>Días:</strong> <span id="outDias">-</span></div>
+            <div><strong>Documento:</strong> Simulación educativa</div>
+          </div>
+        </div>
+
+        <table>
+          <thead>
+            <tr><th>CONCEPTO</th><th class="num">IMPORTE</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Salario base</td><td class="num" id="outSalarioBase">0,00 €</td></tr>
+            <tr><td>Plus convenio</td><td class="num" id="outPlusConvenio">0,00 €</td></tr>
+            <tr><td>Complementos</td><td class="num" id="outComplementos">0,00 €</td></tr>
+            <tr><td>Antigüedad</td><td class="num" id="outAntiguedad">0,00 €</td></tr>
+            <tr><td>Horas extra</td><td class="num" id="outHorasExtra">0,00 €</td></tr>
+            <tr><td>Prorrata pagas extra</td><td class="num" id="outPagasExtra">0,00 €</td></tr>
+            <tr><td>Plus transporte</td><td class="num" id="outPlusTransporte">0,00 €</td></tr>
+            <tr><td>Dietas</td><td class="num" id="outDietas">0,00 €</td></tr>
+            <tr><td>Otros no salariales</td><td class="num" id="outOtrosNoSalariales">0,00 €</td></tr>
+          </tbody>
+          <tfoot>
+            <tr><td>Total devengado</td><td class="num" id="outTotalDevengado">0,00 €</td></tr>
+          </tfoot>
+        </table>
+
+        <table>
+          <thead>
+            <tr><th>DEDUCCIONES</th><th class="num">IMPORTE</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Contingencias comunes</td><td class="num" id="outCcCuota">0,00 €</td></tr>
+            <tr><td>Desempleo</td><td class="num" id="outDesempleoCuota">0,00 €</td></tr>
+            <tr><td>Formación profesional</td><td class="num" id="outFormacionCuota">0,00 €</td></tr>
+            <tr><td>IRPF</td><td class="num" id="outIrpfCuota">0,00 €</td></tr>
+            <tr><td>H.E. fuerza mayor</td><td class="num" id="outHeCuota">0,00 €</td></tr>
+            <tr><td>Otras deducciones</td><td class="num" id="outOtrasDeducciones">0,00 €</td></tr>
+          </tbody>
+          <tfoot>
+            <tr><td>Total deducciones</td><td class="num" id="outTotalDeducciones">0,00 €</td></tr>
+          </tfoot>
+        </table>
+
+        <div class="liquido">
+          Líquido total a percibir: <span id="outLiquido">0,00 €</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel saved-section">
+      <h2>Nóminas guardadas</h2>
+      <p class="small">Se guardan en este navegador para que el alumno pueda recuperar su trabajo.</p>
+      <div class="buttons" style="margin-top:0; margin-bottom:12px;">
+        <button class="btn-secondary" id="btnRefreshSaved">Actualizar lista</button>
+        <button class="btn-outline" id="btnDeleteAllSaved">Borrar todas</button>
+      </div>
+      <div class="saved-box" id="savedList">
+        <div class="small">No hay nóminas guardadas todavía.</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const $ = (id) => document.getElementById(id);
+    const STORAGE_KEY = 'nominas_alumno_guardadas_v1';
+
+    function money(n) {
+      return (Number(n) || 0).toLocaleString('es-ES', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      }) + ' €';
+    }
+
+    function num(id) {
+      return Number($(id).value) || 0;
+    }
+
+    function readForm() {
+      return {
+        empresa: $('empresa').value.trim(),
+        trabajador: $('trabajador').value.trim(),
+        cursoGrupo: $('cursoGrupo').value.trim(),
+        mes: $('mes').value,
+        anio: $('anio').value,
+        dias: num('dias'),
+        salarioBase: num('salarioBase'),
+        plusConvenio: num('plusConvenio'),
+        complementos: num('complementos'),
+        antiguedad: num('antiguedad'),
+        horasExtra: num('horasExtra'),
+        pagasExtra: num('pagasExtra'),
+        plusTransporte: num('plusTransporte'),
+        dietas: num('dietas'),
+        otrosNoSalariales: num('otrosNoSalariales'),
+        cc: num('cc'),
+        desempleo: num('desempleo'),
+        formacion: num('formacion'),
+        irpf: num('irpf'),
+        heFuerzaMayor: num('heFuerzaMayor'),
+        otrasDeducciones: num('otrasDeducciones')
+      };
+    }
+
+    function calculatePayroll(data) {
+      const totalSalarial = data.salarioBase + data.plusConvenio + data.complementos + data.antiguedad + data.horasExtra + data.pagasExtra;
+      const totalNoSalarial = data.plusTransporte + data.dietas + data.otrosNoSalariales;
+      const totalDevengado = totalSalarial + totalNoSalarial;
+      const baseCC = data.salarioBase + data.plusConvenio + data.complementos + data.antiguedad + data.pagasExtra;
+      const baseDesempleo = baseCC + data.horasExtra;
+      const baseIrpf = totalSalarial;
+      const cuotaCC = baseCC * data.cc / 100;
+      const cuotaDesempleo = baseDesempleo * data.desempleo / 100;
+      const cuotaFormacion = baseDesempleo * data.formacion / 100;
+      const cuotaIrpf = baseIrpf * data.irpf / 100;
+      const cuotaHe = data.horasExtra * data.heFuerzaMayor / 100;
+      const totalDeducciones = cuotaCC + cuotaDesempleo + cuotaFormacion + cuotaIrpf + cuotaHe + data.otrasDeducciones;
+      const liquido = totalDevengado - totalDeducciones;
+
+      return {
+        totalDevengado,
+        baseIrpf,
+        cuotaCC,
+        cuotaDesempleo,
+        cuotaFormacion,
+        cuotaIrpf,
+        cuotaHe,
+        totalDeducciones,
+        liquido
+      };
+    }
+
+    function renderPayroll() {
+      const data = readForm();
+      const r = calculatePayroll(data);
+
+      $('resDevengado').textContent = money(r.totalDevengado);
+      $('resDeducciones').textContent = money(r.totalDeducciones);
+      $('resLiquido').textContent = money(r.liquido);
+      $('resBaseIrpf').textContent = money(r.baseIrpf);
+
+      $('outEmpresa').textContent = data.empresa || '-';
+      $('outTrabajador').textContent = data.trabajador || '-';
+      $('outCurso').textContent = data.cursoGrupo || '-';
+      $('outPeriodo').textContent = `${data.mes} / ${data.anio}`;
+      $('outDias').textContent = data.dias || '-';
+
+      $('outSalarioBase').textContent = money(data.salarioBase);
+      $('outPlusConvenio').textContent = money(data.plusConvenio);
+      $('outComplementos').textContent = money(data.complementos);
+      $('outAntiguedad').textContent = money(data.antiguedad);
+      $('outHorasExtra').textContent = money(data.horasExtra);
+      $('outPagasExtra').textContent = money(data.pagasExtra);
+      $('outPlusTransporte').textContent = money(data.plusTransporte);
+      $('outDietas').textContent = money(data.dietas);
+      $('outOtrosNoSalariales').textContent = money(data.otrosNoSalariales);
+      $('outTotalDevengado').textContent = money(r.totalDevengado);
+
+      $('outCcCuota').textContent = money(r.cuotaCC);
+      $('outDesempleoCuota').textContent = money(r.cuotaDesempleo);
+      $('outFormacionCuota').textContent = money(r.cuotaFormacion);
+      $('outIrpfCuota').textContent = money(r.cuotaIrpf);
+      $('outHeCuota').textContent = money(r.cuotaHe);
+      $('outOtrasDeducciones').textContent = money(data.otrasDeducciones);
+      $('outTotalDeducciones').textContent = money(r.totalDeducciones);
+      $('outLiquido').textContent = money(r.liquido);
+
+      return { data, result: r };
+    }
+
+    function loadExample() {
+      $('empresa').value = 'Centro Formativo Laboral S.L.';
+      $('trabajador').value = 'María López García';
+      $('cursoGrupo').value = '1º Gestión Administrativa';
+      $('mes').value = 'Abril';
+      $('anio').value = '2026';
+      $('dias').value = '30';
+      $('salarioBase').value = '1500';
+      $('plusConvenio').value = '100';
+      $('complementos').value = '180';
+      $('antiguedad').value = '70';
+      $('horasExtra').value = '80';
+      $('pagasExtra').value = '250';
+      $('plusTransporte').value = '60';
+      $('dietas').value = '0';
+      $('otrosNoSalariales').value = '0';
+      $('cc').value = '4.70';
+      $('desempleo').value = '1.55';
+      $('formacion').value = '0.10';
+      $('irpf').value = '11.50';
+      $('heFuerzaMayor').value = '2.00';
+      $('otrasDeducciones').value = '0';
+      renderPayroll();
+    }
+
+    function clearForm() {
+      ['empresa', 'trabajador', 'cursoGrupo'].forEach(id => $(id).value = '');
+      $('mes').value = 'Enero';
+      $('anio').value = '2026';
+      $('dias').value = '30';
+      ['salarioBase','plusConvenio','complementos','antiguedad','horasExtra','pagasExtra','plusTransporte','dietas','otrosNoSalariales','otrasDeducciones'].forEach(id => $(id).value = '0');
+      $('cc').value = '4.70';
+      $('desempleo').value = '1.55';
+      $('formacion').value = '0.10';
+      $('irpf').value = '12.00';
+      $('heFuerzaMayor').value = '2.00';
+      renderPayroll();
+    }
+
+    function getSavedPayrolls() {
+      try {
+        return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+      } catch {
+        return [];
+      }
+    }
+
+    function savePayroll() {
+      const payload = renderPayroll();
+      const list = getSavedPayrolls();
+      list.unshift({
+        id: Date.now(),
+        createdAt: new Date().toLocaleString('es-ES'),
+        empresa: payload.data.empresa,
+        trabajador: payload.data.trabajador,
+        periodo: `${payload.data.mes} ${payload.data.anio}`,
+        liquido: payload.result.liquido,
+        data: payload.data
+      });
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(list.slice(0, 20)));
+      renderSavedPayrolls();
+      alert('Nómina guardada en este navegador.');
+    }
+
+    function loadSavedPayroll(id) {
+      const found = getSavedPayrolls().find(item => item.id === id);
+      if (!found) return;
+      Object.entries(found.data).forEach(([key, value]) => {
+        const el = $(key);
+        if (el) el.value = value;
+      });
+      renderPayroll();
+    }
+
+    function deleteSavedPayroll(id) {
+      const filtered = getSavedPayrolls().filter(item => item.id !== id);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(filtered));
+      renderSavedPayrolls();
+    }
+
+    function deleteAllSavedPayrolls() {
+      localStorage.removeItem(STORAGE_KEY);
+      renderSavedPayrolls();
+    }
+
+    function escapeHtml(text) {
+      return String(text)
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('\"', '&quot;')
+        .replaceAll("'", '&#039;');
+    }
+
+    function renderSavedPayrolls() {
+      const list = getSavedPayrolls();
+      const box = $('savedList');
+      if (!list.length) {
+        box.innerHTML = '<div class="small">No hay nóminas guardadas todavía.</div>';
+        return;
+      }
+      box.innerHTML = list.map(item => `
+        <div class="saved-item">
+          <div>
+            <strong>${escapeHtml(item.trabajador || 'Sin nombre')}</strong><br>
+            <span class="small">${escapeHtml(item.empresa || 'Sin empresa')} · ${escapeHtml(item.periodo)} · Guardada el ${escapeHtml(item.createdAt)}</span><br>
+            <span class="small">Líquido: ${money(item.liquido)}</span>
+          </div>
+          <div class="buttons" style="margin-top:0;">
+            <button class="btn-outline" onclick="loadSavedPayroll(${item.id})">Cargar</button>
+            <button class="btn-outline" onclick="deleteSavedPayroll(${item.id})">Borrar</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    $('btnCalcular').addEventListener('click', renderPayroll);
+    $('btnEjemplo').addEventListener('click', loadExample);
+    $('btnGuardar').addEventListener('click', savePayroll);
+    $('btnLimpiar').addEventListener('click', clearForm);
+    $('btnPDF').addEventListener('click', () => window.print());
+    $('btnRefreshSaved').addEventListener('click', renderSavedPayrolls);
+    $('btnDeleteAllSaved').addEventListener('click', deleteAllSavedPayrolls);
+
+    document.querySelectorAll('input, select').forEach(el => {
+      el.addEventListener('input', renderPayroll);
+    });
+
+    window.loadSavedPayroll = loadSavedPayroll;
+    window.deleteSavedPayroll = deleteSavedPayroll;
+
+    renderPayroll();
+    renderSavedPayrolls();
+  </script>
+</body>
+</html>
