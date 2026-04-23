@@ -279,7 +279,6 @@
 
     .info-card p,
     .info-card li {
-      margin: 0;
       color: var(--muted);
       line-height: 1.55;
     }
@@ -832,96 +831,163 @@
 
     <div class="tab-panel" id="tab-irpfreal">
       <div class="panel">
-        <h1>Cómo se calcula el IRPF realmente</h1>
+        <h1>IRPF real: cálculo orientativo paso a paso</h1>
         <p class="lead">
-          En la práctica, la retención de IRPF de una nómina no se obtiene mirando solo una tabla rápida.
-          La empresa aplica un procedimiento de cálculo de retenciones sobre rendimientos del trabajo,
-          teniendo en cuenta la previsión anual de ingresos y la situación personal y familiar del trabajador.
+          Esta pestaña está pensada para clase. Hace preguntas consecutivas, de arriba a abajo, para estimar
+          un porcentaje de IRPF razonable. Sirve para entender de qué depende la retención, pero no sustituye
+          al cálculo oficial.
         </p>
+
+        <div class="subsection">
+          <h3>1. Retribución anual prevista</h3>
+          <div class="grid-3">
+            <div class="field">
+              <label for="irpfSalarioBaseMensual">Salario base mensual (€)</label>
+              <input id="irpfSalarioBaseMensual" type="number" value="1400">
+            </div>
+            <div class="field">
+              <label for="irpfComplementosMensuales">Complementos mensuales (€)</label>
+              <input id="irpfComplementosMensuales" type="number" value="310">
+            </div>
+            <div class="field">
+              <label for="irpfPagasExtraAnuales">Pagas extra totales al año (€)</label>
+              <input id="irpfPagasExtraAnuales" type="number" value="3400">
+            </div>
+            <div class="field">
+              <label for="irpfVariablesAnuales">Variables / bonus previstos al año (€)</label>
+              <input id="irpfVariablesAnuales" type="number" value="0">
+            </div>
+            <div class="field">
+              <label for="irpfRetribucionEspecie">Retribuciones en especie al año (€)</label>
+              <input id="irpfRetribucionEspecie" type="number" value="0">
+            </div>
+            <div class="field">
+              <label for="irpfMesesCobro">Meses con salario este año</label>
+              <input id="irpfMesesCobro" type="number" min="1" max="12" value="12">
+            </div>
+          </div>
+        </div>
+
+        <div class="subsection">
+          <h3>2. Situación familiar</h3>
+          <div class="grid-3">
+            <div class="field">
+              <label for="irpfSituacionFamiliar">Situación familiar</label>
+              <select id="irpfSituacionFamiliar">
+                <option value="1">Situación 1: soltero/a, viudo/a, divorciado/a o separado/a legalmente</option>
+                <option value="2">Situación 2: casado/a con cónyuge con rentas bajas</option>
+                <option value="3">Situación 3: otras situaciones</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="irpfHijos">Número de hijos / descendientes</label>
+              <input id="irpfHijos" type="number" min="0" value="0">
+            </div>
+            <div class="field">
+              <label for="irpfAscendientes">Número de ascendientes a cargo</label>
+              <input id="irpfAscendientes" type="number" min="0" value="0">
+            </div>
+          </div>
+        </div>
+
+        <div class="subsection">
+          <h3>3. Circunstancias personales</h3>
+          <div class="grid-3">
+            <div class="field">
+              <label for="irpfDiscapacidadTrabajador">Discapacidad del trabajador</label>
+              <select id="irpfDiscapacidadTrabajador">
+                <option value="0">Sin discapacidad</option>
+                <option value="1">Igual o superior al 33%</option>
+                <option value="2">Igual o superior al 65%</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="irpfDiscapacidadDescendientes">Descendientes con discapacidad</label>
+              <input id="irpfDiscapacidadDescendientes" type="number" min="0" value="0">
+            </div>
+            <div class="field">
+              <label for="irpfMovilidad">Movilidad geográfica / circunstancias especiales</label>
+              <select id="irpfMovilidad">
+                <option value="0">No</option>
+                <option value="1">Sí</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="subsection">
+          <h3>4. Tipo de relación laboral</h3>
+          <div class="grid-3">
+            <div class="field">
+              <label for="irpfTipoContrato">Tipo de contrato</label>
+              <select id="irpfTipoContrato">
+                <option value="indefinido">Indefinido</option>
+                <option value="temporal">Temporal</option>
+                <option value="formativo">Formativo</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="irpfJornada">Jornada</label>
+              <select id="irpfJornada">
+                <option value="completa">Completa</option>
+                <option value="parcial">Parcial</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="irpfPagadores">Número de pagadores</label>
+              <input id="irpfPagadores" type="number" min="1" value="1">
+            </div>
+          </div>
+        </div>
+
+        <div class="buttons">
+          <button class="btn-primary" id="btnCalcularIrpfOrientativo">Calcular IRPF orientativo</button>
+          <button class="btn-outline" id="btnUsarIrpfEnSimulador">Usar este porcentaje en la nómina</button>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="summary">
+          <div class="summary-card">
+            <span>Retribución anual prevista</span>
+            <strong id="irpfResBrutoAnual">0,00 €</strong>
+          </div>
+          <div class="summary-card">
+            <span>Ajuste personal / familiar</span>
+            <strong id="irpfResAjuste">0,00 €</strong>
+          </div>
+          <div class="summary-card">
+            <span>Base orientativa</span>
+            <strong id="irpfResBase">0,00 €</strong>
+          </div>
+          <div class="summary-card">
+            <span>Retención orientativa</span>
+            <strong id="irpfResTipo">0,00 %</strong>
+          </div>
+        </div>
 
         <div class="info-grid">
           <div class="info-card" style="background:#eef6ff; border-color:#cfe0ff;">
-            <h3>1. La retención no es el impuesto final</h3>
+            <h3>Cómo trabaja este cálculo</h3>
             <p>
-              La retención de IRPF en la nómina es un pago a cuenta. Es decir, es un adelanto del impuesto
-              que luego se regulariza en la declaración de la renta. Por eso el porcentaje de la nómina no
-              debe confundirse con “lo que se paga definitivamente” en el IRPF.
-            </p>
-          </div>
-
-          <div class="info-card" style="background:#eefcf3; border-color:#c8ebd4;">
-            <h3>2. Se calcula con previsión anual</h3>
-            <p>
-              Para calcular la retención, la empresa no suele mirar solo el mes actual. Parte de una previsión
-              anual de retribuciones: salario fijo, pagas extra, variables previsibles, retribuciones en especie
-              y otras cantidades que vayan a percibirse durante el año.
+              El cálculo parte de una retribución anual prevista y después aplica un ajuste orientativo por situación
+              familiar, descendientes, ascendientes y discapacidad. Con ello obtiene una base orientativa y le aplica
+              una escala progresiva didáctica.
             </p>
           </div>
 
           <div class="info-card" style="background:#fff8eb; border-color:#f3d59b;">
-            <h3>3. Importan las circunstancias personales</h3>
+            <h3>Uso correcto en clase</h3>
             <p>
-              El porcentaje también cambia según circunstancias personales y familiares: situación familiar,
-              descendientes, ascendientes, discapacidad y otros datos que afectan al cálculo de la retención.
-              Por eso dos personas con el mismo salario pueden tener retenciones distintas.
-            </p>
-          </div>
-
-          <div class="info-card" style="background:#fff1f3; border-color:#f2c2cb;">
-            <h3>4. No es una simple “tabla de tramos”</h3>
-            <p>
-              Los tramos generales del IRPF sirven para estudiar el impuesto, pero no bastan para fijar por sí solos
-              la retención mensual de una nómina. La retención real se obtiene mediante un procedimiento más completo,
-              basado en los rendimientos del trabajo y en las circunstancias del contribuyente.
-            </p>
-          </div>
-
-          <div class="info-card" style="grid-column: 1 / -1; background:#eef6ff; border-color:#cfe0ff;">
-            <h3>Qué datos usa la empresa para calcular la retención</h3>
-            <ul>
-              <li>Retribución anual prevista.</li>
-              <li>Tipo de contrato y duración previsible dentro del año.</li>
-              <li>Situación familiar del trabajador.</li>
-              <li>Número de hijos u otras cargas familiares, si procede.</li>
-              <li>Discapacidad u otras circunstancias personales relevantes.</li>
-              <li>Regularizaciones posteriores si cambian salario o circunstancias.</li>
-            </ul>
-          </div>
-
-          <div class="info-card" style="background:#eefcf3; border-color:#c8ebd4;">
-            <h3>Regularización durante el año</h3>
-            <p>
-              Si cambian las retribuciones o cambian las circunstancias personales del trabajador, la retención puede
-              recalcularse. Por eso el porcentaje de IRPF puede subir o bajar a lo largo del año aunque el contrato siga vigente.
-            </p>
-          </div>
-
-          <div class="info-card" style="background:#fff8eb; border-color:#f3d59b;">
-            <h3>Qué deben aprender los alumnos</h3>
-            <p>
-              En ejercicios de clase es normal que el supuesto dé directamente un porcentaje de IRPF para simplificar.
-              Pero conviene que el alumnado sepa que en la realidad ese porcentaje sale de un cálculo más completo,
-              no de una tabla rápida aplicada al sueldo mensual sin más.
+              Úsalo para que el alumnado vea por qué cambia el porcentaje según salario y circunstancias personales.
+              El resultado es útil para ejercicios, pero no debe presentarse como porcentaje oficial cerrado.
             </p>
           </div>
 
           <div class="info-card" style="grid-column: 1 / -1; background:#fff1f3; border-color:#f2c2cb;">
-            <h3>Esquema didáctico del cálculo real</h3>
-            <p>
-              <strong>Paso 1:</strong> estimar la retribución anual.<br>
-              <strong>Paso 2:</strong> incorporar circunstancias personales y familiares.<br>
-              <strong>Paso 3:</strong> obtener una retención anual prevista.<br>
-              <strong>Paso 4:</strong> aplicar ese porcentaje en la nómina.<br>
-              <strong>Paso 5:</strong> regularizar si cambian los datos durante el año.
-            </p>
-          </div>
-
-          <div class="info-card" style="grid-column: 1 / -1; background:#eef6ff; border-color:#cfe0ff;">
-            <h3>Conclusión para clase</h3>
-            <p>
-              En esta página el IRPF del simulador sigue siendo un porcentaje que introduces manualmente, porque eso
-              es lo más útil para practicar nóminas en el aula. Esta pestaña sirve para dejar claro que, en la realidad,
-              la retención no se obtiene con una tabla simple, sino con un procedimiento de cálculo más completo y con datos anuales.
+            <h3>Resultado explicado</h3>
+            <p id="irpfExplicacion">
+              Completa los datos y pulsa en calcular.
             </p>
           </div>
         </div>
@@ -1156,6 +1222,106 @@
       return { data, result: r };
     }
 
+    function calcularIrpfOrientativo() {
+      const salarioBaseMensual = Number($('irpfSalarioBaseMensual').value) || 0;
+      const complementosMensuales = Number($('irpfComplementosMensuales').value) || 0;
+      const pagasExtraAnuales = Number($('irpfPagasExtraAnuales').value) || 0;
+      const variablesAnuales = Number($('irpfVariablesAnuales').value) || 0;
+      const retribucionEspecie = Number($('irpfRetribucionEspecie').value) || 0;
+      const mesesCobro = Number($('irpfMesesCobro').value) || 12;
+
+      const situacionFamiliar = Number($('irpfSituacionFamiliar').value) || 1;
+      const hijos = Number($('irpfHijos').value) || 0;
+      const ascendientes = Number($('irpfAscendientes').value) || 0;
+      const discapacidadTrabajador = Number($('irpfDiscapacidadTrabajador').value) || 0;
+      const discapacidadDescendientes = Number($('irpfDiscapacidadDescendientes').value) || 0;
+      const movilidad = Number($('irpfMovilidad').value) || 0;
+
+      const tipoContrato = $('irpfTipoContrato').value;
+      const jornada = $('irpfJornada').value;
+      const pagadores = Number($('irpfPagadores').value) || 1;
+
+      const brutoAnual =
+        ((salarioBaseMensual + complementosMensuales) * mesesCobro) +
+        pagasExtraAnuales +
+        variablesAnuales +
+        retribucionEspecie;
+
+      let ajuste = 0;
+
+      if (situacionFamiliar === 2) ajuste += 1800;
+      if (situacionFamiliar === 3) ajuste += 600;
+
+      ajuste += hijos * 1400;
+      ajuste += ascendientes * 1100;
+
+      if (discapacidadTrabajador === 1) ajuste += 3000;
+      if (discapacidadTrabajador === 2) ajuste += 7000;
+
+      ajuste += discapacidadDescendientes * 1800;
+
+      if (movilidad === 1) ajuste += 2000;
+
+      if (jornada === 'parcial') ajuste += 300;
+      if (tipoContrato === 'temporal') ajuste -= 300;
+      if (tipoContrato === 'formativo') ajuste -= 500;
+      if (pagadores > 1) ajuste -= 250;
+
+      const baseOrientativa = Math.max(0, brutoAnual - ajuste);
+
+      let cuota = 0;
+      let restante = baseOrientativa;
+
+      const tramos = [
+        { limite: 12450, tipo: 0.19 },
+        { limite: 7750, tipo: 0.24 },
+        { limite: 15000, tipo: 0.30 },
+        { limite: 24800, tipo: 0.37 },
+        { limite: 240000, tipo: 0.45 },
+        { limite: Infinity, tipo: 0.47 }
+      ];
+
+      for (const tramo of tramos) {
+        if (restante <= 0) break;
+        const aplicable = Math.min(restante, tramo.limite);
+        cuota += aplicable * tramo.tipo;
+        restante -= aplicable;
+      }
+
+      let tipoOrientativo = brutoAnual > 0 ? (cuota / brutoAnual) * 100 : 0;
+
+      if (brutoAnual < 16000) tipoOrientativo = Math.max(0, tipoOrientativo - 4);
+      else if (brutoAnual < 22000) tipoOrientativo = Math.max(0, tipoOrientativo - 2);
+
+      tipoOrientativo = Math.max(0, Math.min(45, tipoOrientativo));
+
+      $('irpfResBrutoAnual').textContent = money(brutoAnual);
+      $('irpfResAjuste').textContent = money(ajuste);
+      $('irpfResBase').textContent = money(baseOrientativa);
+      $('irpfResTipo').textContent = `${tipoOrientativo.toFixed(2)} %`;
+
+      $('irpfExplicacion').textContent =
+        `Con una retribución anual prevista de ${money(brutoAnual)}, y aplicando un ajuste orientativo de ${money(ajuste)} por situación familiar y circunstancias personales, la base orientativa resultante es ${money(baseOrientativa)}. Sobre esa base se aplica una escala progresiva didáctica, dando una retención aproximada del ${tipoOrientativo.toFixed(2)} %.`;
+
+      return {
+        brutoAnual,
+        ajuste,
+        baseOrientativa,
+        tipoOrientativo
+      };
+    }
+
+    function usarIrpfOrientativoEnNomina() {
+      const resultado = calcularIrpfOrientativo();
+      $('irpf').value = resultado.tipoOrientativo.toFixed(2);
+      renderPayroll();
+
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      document.querySelector('[data-tab="simulador"]').classList.add('active');
+      $('tab-simulador').classList.add('active');
+    }
+
     function loadExample() {
       $('empresa').value = 'Centro Formativo Laboral S.L.';
       $('cif').value = 'B45678901';
@@ -1183,7 +1349,25 @@
       $('irpf').value = '11.50';
       $('heFuerzaMayor').value = '2.00';
       $('otrasDeducciones').value = '0';
+
+      $('irpfSalarioBaseMensual').value = '1500';
+      $('irpfComplementosMensuales').value = '350';
+      $('irpfPagasExtraAnuales').value = '3200';
+      $('irpfVariablesAnuales').value = '0';
+      $('irpfRetribucionEspecie').value = '0';
+      $('irpfMesesCobro').value = '12';
+      $('irpfSituacionFamiliar').value = '1';
+      $('irpfHijos').value = '0';
+      $('irpfAscendientes').value = '0';
+      $('irpfDiscapacidadTrabajador').value = '0';
+      $('irpfDiscapacidadDescendientes').value = '0';
+      $('irpfMovilidad').value = '0';
+      $('irpfTipoContrato').value = 'indefinido';
+      $('irpfJornada').value = 'completa';
+      $('irpfPagadores').value = '1';
+
       renderPayroll();
+      calcularIrpfOrientativo();
     }
 
     function clearForm() {
@@ -1197,7 +1381,25 @@
       $('formacion').value = '0.10';
       $('irpf').value = '12.00';
       $('heFuerzaMayor').value = '2.00';
+
+      $('irpfSalarioBaseMensual').value = '1400';
+      $('irpfComplementosMensuales').value = '310';
+      $('irpfPagasExtraAnuales').value = '3400';
+      $('irpfVariablesAnuales').value = '0';
+      $('irpfRetribucionEspecie').value = '0';
+      $('irpfMesesCobro').value = '12';
+      $('irpfSituacionFamiliar').value = '1';
+      $('irpfHijos').value = '0';
+      $('irpfAscendientes').value = '0';
+      $('irpfDiscapacidadTrabajador').value = '0';
+      $('irpfDiscapacidadDescendientes').value = '0';
+      $('irpfMovilidad').value = '0';
+      $('irpfTipoContrato').value = 'indefinido';
+      $('irpfJornada').value = 'completa';
+      $('irpfPagadores').value = '1';
+
       renderPayroll();
+      calcularIrpfOrientativo();
     }
 
     function getSavedPayrolls() {
@@ -1282,11 +1484,16 @@
     $('btnGuardar').addEventListener('click', savePayroll);
     $('btnLimpiar').addEventListener('click', clearForm);
     $('btnPDF').addEventListener('click', () => window.print());
+    $('btnCalcularIrpfOrientativo').addEventListener('click', calcularIrpfOrientativo);
+    $('btnUsarIrpfEnSimulador').addEventListener('click', usarIrpfOrientativoEnNomina);
     $('btnRefreshSaved').addEventListener('click', renderSavedPayrolls);
     $('btnDeleteAllSaved').addEventListener('click', deleteAllSavedPayrolls);
 
     document.querySelectorAll('input, select').forEach(el => {
-      el.addEventListener('input', renderPayroll);
+      el.addEventListener('input', () => {
+        if (el.id.startsWith('irpf')) return;
+        renderPayroll();
+      });
     });
 
     window.loadSavedPayroll = loadSavedPayroll;
@@ -1303,6 +1510,7 @@
 
     renderPayroll();
     renderSavedPayrolls();
+    calcularIrpfOrientativo();
   </script>
 </body>
 </html>
