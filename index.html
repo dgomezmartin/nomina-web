@@ -658,6 +658,8 @@
     <div class="tab-panel" id="tab-previa">
       <div class="panel">
         <h1>Teoría nóminas</h1>
+        <p class="lead">Este apartado está pensado para estudiar y entender la nómina antes de hacer ejercicios. La idea es que el alumno pueda leer estos apuntes y, con ellos, identificar cada bloque de la nómina, entender qué significa cada concepto y saber cómo se relacionan entre sí.</p>
+
         <div class="info-grid">
           <div class="info-card" style="background:#eef6ff; border-color:#cfe0ff;">
             <h3>Qué es una nómina</h3>
@@ -772,7 +774,7 @@
 
           <div class="info-card" style="grid-column: 1 / -1; background:#fff1f3; border-color:#f2c2cb;">
             <h3>Tabla orientativa de tramos generales del IRPF</h3>
-            <p>Esta tabla sirve para estudiar el impuesto y entender que el IRPF funciona por tramos. No debe confundirse con el porcentaje exacto de retención de una nómina concreta, que la Agencia Tributaria calcula atendiendo a las circunstancias personales y económicas del trabajador.</p>
+            <p>Esta tabla sirve para estudiar el impuesto y entender que el IRPF funciona por tramos. No debe confundirse con el porcentaje exacto de retención de una nómina concreta.</p>
             <div class="table-wrap" style="margin-top:10px;">
               <table>
                 <thead>
@@ -829,8 +831,10 @@
 
     <div class="tab-panel" id="tab-irpfreal">
       <div class="panel">
-        <h1>IRPF real: cálculo orientativo paso a paso</h1>
+        <h1>IRPF real: cálculo aproximado</h1>
         <p class="lead">
+          Esta pestaña está pensada para acercarse más al cálculo real. Distingue entre el tipo estimado en nómina
+          y el tipo efectivo anual del IRPF.
         </p>
 
         <div class="subsection">
@@ -869,9 +873,9 @@
             <div class="field">
               <label for="irpfSituacionFamiliar">Situación familiar</label>
               <select id="irpfSituacionFamiliar">
-                <option value="1">Situación 1: soltero/a, viudo/a, divorciado/a o separado/a legalmente</option>
-                <option value="2">Situación 2: casado/a con cónyuge con rentas bajas</option>
-                <option value="3">Situación 3: otras situaciones</option>
+                <option value="1">Soltero/a, viudo/a, divorciado/a o separado/a legalmente</option>
+                <option value="2">Casado/a con cónyuge con rentas bajas</option>
+                <option value="3">Otras situaciones</option>
               </select>
             </div>
             <div class="field">
@@ -936,7 +940,7 @@
         </div>
 
         <div class="buttons">
-          <button class="btn-primary" id="btnCalcularIrpfOrientativo">Calcular IRPF orientativo</button>
+          <button class="btn-primary" id="btnCalcularIrpfOrientativo">Calcular IRPF</button>
           <button class="btn-outline" id="btnUsarIrpfEnSimulador">Usar este porcentaje en la nómina</button>
         </div>
       </div>
@@ -948,34 +952,41 @@
             <strong id="irpfResBrutoAnual">0,00 €</strong>
           </div>
           <div class="summary-card">
-            <span>Ajuste personal / familiar</span>
+            <span>Reducciones + cotización</span>
             <strong id="irpfResAjuste">0,00 €</strong>
           </div>
           <div class="summary-card">
-            <span>Base orientativa</span>
+            <span>Base liquidable (aproximada)</span>
             <strong id="irpfResBase">0,00 €</strong>
           </div>
           <div class="summary-card">
-            <span>Retención orientativa</span>
+            <span>Retención estimada en nómina</span>
             <strong id="irpfResTipo">0,00 %</strong>
+          </div>
+        </div>
+
+        <div class="summary" style="grid-template-columns: repeat(1, minmax(0, 1fr));">
+          <div class="summary-card">
+            <span>Tipo efectivo IRPF</span>
+            <strong id="irpfResTipoEfectivo">0,00 %</strong>
           </div>
         </div>
 
         <div class="info-grid">
           <div class="info-card" style="background:#eef6ff; border-color:#cfe0ff;">
-            <h3>Cómo trabaja este cálculo</h3>
+            <h3>Qué significa cada resultado</h3>
             <p>
-              El cálculo parte de una retribución anual prevista y después aplica un ajuste orientativo por situación
-              familiar, descendientes, ascendientes y discapacidad. Con ello obtiene una base orientativa y le aplica
-              una escala progresiva didáctica.
+              La base liquidable aproximada descuenta cotización del trabajador y mínimos personales/familiares.
+              El tipo efectivo se parece al que muestran calculadoras anuales. La retención estimada en nómina
+              añade un pequeño ajuste práctico.
             </p>
           </div>
 
           <div class="info-card" style="background:#fff8eb; border-color:#f3d59b;">
-            <h3>Uso correcto en clase</h3>
+            <h3>Sueldos bajos</h3>
             <p>
-              Úsalo para que el alumnado vea por qué cambia el porcentaje según salario y circunstancias personales.
-              El resultado es útil para ejercicios, pero no debe presentarse como porcentaje oficial cerrado.
+              Si la base queda suficientemente reducida, el simulador fija el IRPF en 0,00 %. Así se evitan
+              resultados irreales en salarios bajos.
             </p>
           </div>
 
@@ -1217,135 +1228,118 @@
       return { data, result: r };
     }
 
-  function calcularIrpfOrientativo() {
-  const salarioBaseMensual = Number($('irpfSalarioBaseMensual').value) || 0;
-  const complementosMensuales = Number($('irpfComplementosMensuales').value) || 0;
-  const pagasExtraAnuales = Number($('irpfPagasExtraAnuales').value) || 0;
-  const variablesAnuales = Number($('irpfVariablesAnuales').value) || 0;
-  const retribucionEspecie = Number($('irpfRetribucionEspecie').value) || 0;
-  const mesesCobro = Number($('irpfMesesCobro').value) || 12;
+    function calcularIrpfOrientativo() {
+      const salarioBaseMensual = Number($('irpfSalarioBaseMensual').value) || 0;
+      const complementosMensuales = Number($('irpfComplementosMensuales').value) || 0;
+      const pagasExtraAnuales = Number($('irpfPagasExtraAnuales').value) || 0;
+      const variablesAnuales = Number($('irpfVariablesAnuales').value) || 0;
+      const retribucionEspecie = Number($('irpfRetribucionEspecie').value) || 0;
+      const mesesCobro = Number($('irpfMesesCobro').value) || 12;
 
-  const situacionFamiliar = Number($('irpfSituacionFamiliar').value) || 1;
-  const hijos = Number($('irpfHijos').value) || 0;
-  const ascendientes = Number($('irpfAscendientes').value) || 0;
-  const discapacidadTrabajador = Number($('irpfDiscapacidadTrabajador').value) || 0;
-  const discapacidadDescendientes = Number($('irpfDiscapacidadDescendientes').value) || 0;
-  const movilidad = Number($('irpfMovilidad').value) || 0;
+      const situacionFamiliar = Number($('irpfSituacionFamiliar').value) || 1;
+      const hijos = Number($('irpfHijos').value) || 0;
+      const ascendientes = Number($('irpfAscendientes').value) || 0;
+      const discapacidadTrabajador = Number($('irpfDiscapacidadTrabajador').value) || 0;
+      const discapacidadDescendientes = Number($('irpfDiscapacidadDescendientes').value) || 0;
+      const movilidad = Number($('irpfMovilidad').value) || 0;
 
-  const tipoContrato = $('irpfTipoContrato').value;
-  const jornada = $('irpfJornada').value;
-  const pagadores = Number($('irpfPagadores').value) || 1;
+      const tipoContrato = $('irpfTipoContrato').value;
+      const jornada = $('irpfJornada').value;
+      const pagadores = Number($('irpfPagadores').value) || 1;
 
-  // 1) Retribución anual prevista
-  const brutoAnual =
-    ((salarioBaseMensual + complementosMensuales) * mesesCobro) +
-    pagasExtraAnuales +
-    variablesAnuales +
-    retribucionEspecie;
+      const brutoAnual =
+        ((salarioBaseMensual + complementosMensuales) * mesesCobro) +
+        pagasExtraAnuales +
+        variablesAnuales +
+        retribucionEspecie;
 
-  // 2) Cotización del trabajador aproximada sobre salario dinerario
-  // Se usa una aproximación didáctica de contingencias comunes + desempleo + formación
-  const cotizacionTrabajador = brutoAnual * 0.0635;
+      const cotizacionTrabajador = brutoAnual * 0.0635;
 
-  // 3) Mínimo personal y familiar didáctico, más cercano a la lógica real
-  let minimoPersonalFamiliar = 5550;
+      let minimo = 5550;
 
-  if (situacionFamiliar === 2) minimoPersonalFamiliar += 1500;
-  if (situacionFamiliar === 3) minimoPersonalFamiliar += 500;
+      if (situacionFamiliar === 2) minimo += 1500;
+      if (situacionFamiliar === 3) minimo += 500;
 
-  if (hijos >= 1) minimoPersonalFamiliar += 2400;
-  if (hijos >= 2) minimoPersonalFamiliar += 2700;
-  if (hijos >= 3) minimoPersonalFamiliar += 4000;
-  if (hijos >= 4) minimoPersonalFamiliar += 4500;
+      if (hijos >= 1) minimo += 2400;
+      if (hijos >= 2) minimo += 2700;
+      if (hijos >= 3) minimo += 4000;
+      if (hijos >= 4) minimo += 4500;
 
-  minimoPersonalFamiliar += ascendientes * 1150;
+      minimo += ascendientes * 1150;
 
-  if (discapacidadTrabajador === 1) minimoPersonalFamiliar += 3000;
-  if (discapacidadTrabajador === 2) minimoPersonalFamiliar += 9000;
+      if (discapacidadTrabajador === 1) minimo += 3000;
+      if (discapacidadTrabajador === 2) minimo += 9000;
 
-  minimoPersonalFamiliar += discapacidadDescendientes * 3000;
+      minimo += discapacidadDescendientes * 3000;
 
-  if (movilidad === 1) minimoPersonalFamiliar += 2000;
+      if (movilidad === 1) minimo += 2000;
 
-  // 4) Base orientativa
-  let baseOrientativa = brutoAnual - cotizacionTrabajador - minimoPersonalFamiliar;
-  baseOrientativa = Math.max(0, baseOrientativa);
+      let base = brutoAnual - cotizacionTrabajador - minimo;
+      base = Math.max(0, base);
 
-  // 5) Regla clave para salarios bajos:
-  // si la base queda muy reducida, la retención debe ser 0 o prácticamente 0
-  if (baseOrientativa <= 7000) {
-    $('irpfResBrutoAnual').textContent = money(brutoAnual);
-    $('irpfResAjuste').textContent = money(minimoPersonalFamiliar + cotizacionTrabajador);
-    $('irpfResBase').textContent = money(baseOrientativa);
-    $('irpfResTipo').textContent = `0,00 %`;
+      if (base <= 7000) {
+        $('irpfResBrutoAnual').textContent = money(brutoAnual);
+        $('irpfResAjuste').textContent = money(minimo + cotizacionTrabajador);
+        $('irpfResBase').textContent = money(base);
+        $('irpfResTipo').textContent = `0,00 %`;
+        $('irpfResTipoEfectivo').textContent = `0,00 %`;
+        $('irpfExplicacion').textContent =
+          `La base liquidable aproximada es ${money(base)}, por lo que no corresponde retención de IRPF.`;
+        return {
+          brutoAnual,
+          ajuste: minimo + cotizacionTrabajador,
+          baseOrientativa: base,
+          tipoOrientativo: 0
+        };
+      }
 
-    $('irpfExplicacion').textContent =
-      `Con una retribución anual prevista de ${money(brutoAnual)}, una cotización aproximada de ${money(cotizacionTrabajador)} y un mínimo/ajuste personal y familiar de ${money(minimoPersonalFamiliar)}, la base orientativa queda en ${money(baseOrientativa)}. Al ser una base muy reducida, la retención resultante se considera 0,00 % en este simulador.`;
+      let cuota = 0;
+      let restante = base;
 
-    return {
-      brutoAnual,
-      ajuste: minimoPersonalFamiliar + cotizacionTrabajador,
-      baseOrientativa,
-      tipoOrientativo: 0
-    };
-  }
+      const tramos = [
+        { limite: 12450, tipo: 0.19 },
+        { limite: 7750, tipo: 0.24 },
+        { limite: 15000, tipo: 0.30 },
+        { limite: 24800, tipo: 0.37 },
+        { limite: Infinity, tipo: 0.45 }
+      ];
 
-  // 6) Cuota orientativa progresiva
-  let cuota = 0;
-  let restante = baseOrientativa;
+      for (const tramo of tramos) {
+        if (restante <= 0) break;
+        const aplicable = Math.min(restante, tramo.limite);
+        cuota += aplicable * tramo.tipo;
+        restante -= aplicable;
+      }
 
-  const tramos = [
-    { limite: 12450, tipo: 0.19 },
-    { limite: 7750, tipo: 0.24 },
-    { limite: 15000, tipo: 0.30 },
-    { limite: 24800, tipo: 0.37 },
-    { limite: 240000, tipo: 0.45 },
-    { limite: Infinity, tipo: 0.47 }
-  ];
+      let tipoEfectivo = (cuota / brutoAnual) * 100;
+      let tipoNomina = tipoEfectivo;
 
-  for (const tramo of tramos) {
-    if (restante <= 0) break;
-    const aplicable = Math.min(restante, tramo.limite);
-    cuota += aplicable * tramo.tipo;
-    restante -= aplicable;
-  }
+      if (tipoContrato === 'temporal') tipoNomina += 0.7;
+      if (pagadores > 1) tipoNomina += 0.7;
+      if (jornada === 'parcial') tipoNomina -= 0.3;
 
-  // 7) Tipo efectivo sobre bruto anual
-  let tipoOrientativo = brutoAnual > 0 ? (cuota / brutoAnual) * 100 : 0;
+      tipoNomina = Math.max(0, tipoNomina);
 
-  // 8) Ajustes suaves para acercarlo mejor a una retención real de nómina
-  if (tipoContrato === 'temporal') tipoOrientativo += 0.75;
-  if (tipoContrato === 'formativo') tipoOrientativo -= 1.00;
-  if (jornada === 'parcial') tipoOrientativo -= 0.25;
-  if (pagadores > 1) tipoOrientativo += 0.75;
+      $('irpfResBrutoAnual').textContent = money(brutoAnual);
+      $('irpfResAjuste').textContent = money(minimo + cotizacionTrabajador);
+      $('irpfResBase').textContent = money(base);
+      $('irpfResTipo').textContent = `${tipoNomina.toFixed(2).replace('.', ',')} %`;
+      $('irpfResTipoEfectivo').textContent = `${tipoEfectivo.toFixed(2).replace('.', ',')} %`;
+      $('irpfExplicacion').textContent =
+        `Base liquidable aproximada: ${money(base)}. Tipo efectivo IRPF: ${tipoEfectivo.toFixed(2).replace('.', ',')} %. Tipo estimado en nómina: ${tipoNomina.toFixed(2).replace('.', ',')} %.`;
 
-  // 9) Afinado de salarios medios-bajos para que no salga inflado
-  if (brutoAnual <= 14000) tipoOrientativo = Math.min(tipoOrientativo, 0);
-  else if (brutoAnual <= 18000) tipoOrientativo = Math.min(tipoOrientativo, 4.5);
-  else if (brutoAnual <= 22000) tipoOrientativo = Math.min(tipoOrientativo, 8.0);
-  else if (brutoAnual <= 28000) tipoOrientativo = Math.min(tipoOrientativo, 12.5);
-  else if (brutoAnual <= 35000) tipoOrientativo = Math.min(tipoOrientativo, 15.5);
+      return {
+        brutoAnual,
+        ajuste: minimo + cotizacionTrabajador,
+        baseOrientativa: base,
+        tipoOrientativo: tipoNomina
+      };
+    }
 
-  tipoOrientativo = Math.max(0, Math.min(35, tipoOrientativo));
-
-  $('irpfResBrutoAnual').textContent = money(brutoAnual);
-  $('irpfResAjuste').textContent = money(minimoPersonalFamiliar + cotizacionTrabajador);
-  $('irpfResBase').textContent = money(baseOrientativa);
-  $('irpfResTipo').textContent = `${tipoOrientativo.toFixed(2).replace('.', ',')} %`;
-
-  $('irpfExplicacion').textContent =
-    `Con una retribución anual prevista de ${money(brutoAnual)}, una cotización del trabajador aproximada de ${money(cotizacionTrabajador)} y un mínimo/ajuste personal y familiar de ${money(minimoPersonalFamiliar)}, la base orientativa queda en ${money(baseOrientativa)}. Sobre esa base se aplica una escala progresiva y se obtiene una retención aproximada del ${tipoOrientativo.toFixed(2).replace('.', ',')} %.`;
-
-  return {
-    brutoAnual,
-    ajuste: minimoPersonalFamiliar + cotizacionTrabajador,
-    baseOrientativa,
-    tipoOrientativo
-  };
-}
     function usarIrpfOrientativoEnNomina() {
       const resultado = calcularIrpfOrientativo();
-      $('irpf').value = resultado.tipoOrientativo.toFixed(2);
+      if (!resultado) return;
+      $('irpf').value = Number(resultado.tipoOrientativo || 0).toFixed(2);
       renderPayroll();
 
       document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
