@@ -1217,7 +1217,7 @@
       return { data, result: r };
     }
 
-   function calcularIrpfOrientativo() {
+  function calcularIrpfOrientativo() {
   const salarioBaseMensual = Number($('irpfSalarioBaseMensual').value) || 0;
   const complementosMensuales = Number($('irpfComplementosMensuales').value) || 0;
   const pagasExtraAnuales = Number($('irpfPagasExtraAnuales').value) || 0;
@@ -1243,11 +1243,11 @@
     variablesAnuales +
     retribucionEspecie;
 
-  // 2) Cotización trabajador aproximada sobre salario dinerario
-  // (didáctica, no oficial)
+  // 2) Cotización del trabajador aproximada sobre salario dinerario
+  // Se usa una aproximación didáctica de contingencias comunes + desempleo + formación
   const cotizacionTrabajador = brutoAnual * 0.0635;
 
-  // 3) Mínimo / ajuste personal y familiar didáctico
+  // 3) Mínimo personal y familiar didáctico, más cercano a la lógica real
   let minimoPersonalFamiliar = 5550;
 
   if (situacionFamiliar === 2) minimoPersonalFamiliar += 1500;
@@ -1271,7 +1271,26 @@
   let baseOrientativa = brutoAnual - cotizacionTrabajador - minimoPersonalFamiliar;
   baseOrientativa = Math.max(0, baseOrientativa);
 
-  // 5) Cuota orientativa progresiva
+  // 5) Regla clave para salarios bajos:
+  // si la base queda muy reducida, la retención debe ser 0 o prácticamente 0
+  if (baseOrientativa <= 7000) {
+    $('irpfResBrutoAnual').textContent = money(brutoAnual);
+    $('irpfResAjuste').textContent = money(minimoPersonalFamiliar + cotizacionTrabajador);
+    $('irpfResBase').textContent = money(baseOrientativa);
+    $('irpfResTipo').textContent = `0,00 %`;
+
+    $('irpfExplicacion').textContent =
+      `Con una retribución anual prevista de ${money(brutoAnual)}, una cotización aproximada de ${money(cotizacionTrabajador)} y un mínimo/ajuste personal y familiar de ${money(minimoPersonalFamiliar)}, la base orientativa queda en ${money(baseOrientativa)}. Al ser una base muy reducida, la retención resultante se considera 0,00 % en este simulador.`;
+
+    return {
+      brutoAnual,
+      ajuste: minimoPersonalFamiliar + cotizacionTrabajador,
+      baseOrientativa,
+      tipoOrientativo: 0
+    };
+  }
+
+  // 6) Cuota orientativa progresiva
   let cuota = 0;
   let restante = baseOrientativa;
 
@@ -1291,24 +1310,31 @@
     restante -= aplicable;
   }
 
-  // 6) Tipo efectivo sobre bruto anual
+  // 7) Tipo efectivo sobre bruto anual
   let tipoOrientativo = brutoAnual > 0 ? (cuota / brutoAnual) * 100 : 0;
 
-  // 7) Ajustes suaves para acercarlo mejor a la retención de nómina
+  // 8) Ajustes suaves para acercarlo mejor a una retención real de nómina
   if (tipoContrato === 'temporal') tipoOrientativo += 0.75;
   if (tipoContrato === 'formativo') tipoOrientativo -= 1.00;
   if (jornada === 'parcial') tipoOrientativo -= 0.25;
   if (pagadores > 1) tipoOrientativo += 0.75;
+
+  // 9) Afinado de salarios medios-bajos para que no salga inflado
+  if (brutoAnual <= 14000) tipoOrientativo = Math.min(tipoOrientativo, 0);
+  else if (brutoAnual <= 18000) tipoOrientativo = Math.min(tipoOrientativo, 4.5);
+  else if (brutoAnual <= 22000) tipoOrientativo = Math.min(tipoOrientativo, 8.0);
+  else if (brutoAnual <= 28000) tipoOrientativo = Math.min(tipoOrientativo, 12.5);
+  else if (brutoAnual <= 35000) tipoOrientativo = Math.min(tipoOrientativo, 15.5);
 
   tipoOrientativo = Math.max(0, Math.min(35, tipoOrientativo));
 
   $('irpfResBrutoAnual').textContent = money(brutoAnual);
   $('irpfResAjuste').textContent = money(minimoPersonalFamiliar + cotizacionTrabajador);
   $('irpfResBase').textContent = money(baseOrientativa);
-  $('irpfResTipo').textContent = `${tipoOrientativo.toFixed(2)} %`;
+  $('irpfResTipo').textContent = `${tipoOrientativo.toFixed(2).replace('.', ',')} %`;
 
   $('irpfExplicacion').textContent =
-    `Con una retribución anual prevista de ${money(brutoAnual)}, una cotización del trabajador aproximada de ${money(cotizacionTrabajador)} y un mínimo/ajuste personal y familiar didáctico de ${money(minimoPersonalFamiliar)}, la base orientativa queda en ${money(baseOrientativa)}. Sobre esa base se aplica una escala progresiva y se obtiene una retención orientativa del ${tipoOrientativo.toFixed(2)} %.`;
+    `Con una retribución anual prevista de ${money(brutoAnual)}, una cotización del trabajador aproximada de ${money(cotizacionTrabajador)} y un mínimo/ajuste personal y familiar de ${money(minimoPersonalFamiliar)}, la base orientativa queda en ${money(baseOrientativa)}. Sobre esa base se aplica una escala progresiva y se obtiene una retención aproximada del ${tipoOrientativo.toFixed(2).replace('.', ',')} %.`;
 
   return {
     brutoAnual,
@@ -1317,7 +1343,6 @@
     tipoOrientativo
   };
 }
-
     function usarIrpfOrientativoEnNomina() {
       const resultado = calcularIrpfOrientativo();
       $('irpf').value = resultado.tipoOrientativo.toFixed(2);
