@@ -1217,7 +1217,7 @@
       return { data, result: r };
     }
 
-    function calcularIrpfOrientativo() {
+   function calcularIrpfOrientativo() {
   const salarioBaseMensual = Number($('irpfSalarioBaseMensual').value) || 0;
   const complementosMensuales = Number($('irpfComplementosMensuales').value) || 0;
   const pagasExtraAnuales = Number($('irpfPagasExtraAnuales').value) || 0;
@@ -1236,76 +1236,83 @@
   const jornada = $('irpfJornada').value;
   const pagadores = Number($('irpfPagadores').value) || 1;
 
+  // 1) Retribución anual prevista
   const brutoAnual =
     ((salarioBaseMensual + complementosMensuales) * mesesCobro) +
     pagasExtraAnuales +
     variablesAnuales +
     retribucionEspecie;
 
-  let ajuste = 0;
+  // 2) Cotización trabajador aproximada sobre salario dinerario
+  // (didáctica, no oficial)
+  const cotizacionTrabajador = brutoAnual * 0.0635;
 
-  if (situacionFamiliar === 2) ajuste += 1500;
-  if (situacionFamiliar === 3) ajuste += 500;
+  // 3) Mínimo / ajuste personal y familiar didáctico
+  let minimoPersonalFamiliar = 5550;
 
-  ajuste += hijos * 1200;
-  ajuste += ascendientes * 900;
+  if (situacionFamiliar === 2) minimoPersonalFamiliar += 1500;
+  if (situacionFamiliar === 3) minimoPersonalFamiliar += 500;
 
-  if (discapacidadTrabajador === 1) ajuste += 2500;
-  if (discapacidadTrabajador === 2) ajuste += 5500;
+  if (hijos >= 1) minimoPersonalFamiliar += 2400;
+  if (hijos >= 2) minimoPersonalFamiliar += 2700;
+  if (hijos >= 3) minimoPersonalFamiliar += 4000;
+  if (hijos >= 4) minimoPersonalFamiliar += 4500;
 
-  ajuste += discapacidadDescendientes * 1500;
+  minimoPersonalFamiliar += ascendientes * 1150;
 
-  if (movilidad === 1) ajuste += 1500;
+  if (discapacidadTrabajador === 1) minimoPersonalFamiliar += 3000;
+  if (discapacidadTrabajador === 2) minimoPersonalFamiliar += 9000;
 
-  if (jornada === 'parcial') ajuste += 250;
-  if (tipoContrato === 'temporal') ajuste -= 200;
-  if (tipoContrato === 'formativo') ajuste -= 400;
-  if (pagadores > 1) ajuste -= 200;
+  minimoPersonalFamiliar += discapacidadDescendientes * 3000;
 
-  const baseOrientativa = Math.max(0, brutoAnual - ajuste);
+  if (movilidad === 1) minimoPersonalFamiliar += 2000;
 
-  let tipoOrientativo = 0;
+  // 4) Base orientativa
+  let baseOrientativa = brutoAnual - cotizacionTrabajador - minimoPersonalFamiliar;
+  baseOrientativa = Math.max(0, baseOrientativa);
 
-  if (baseOrientativa <= 14000) tipoOrientativo = 2;
-  else if (baseOrientativa <= 18000) tipoOrientativo = 5;
-  else if (baseOrientativa <= 22000) tipoOrientativo = 8;
-  else if (baseOrientativa <= 26000) tipoOrientativo = 10;
-  else if (baseOrientativa <= 30000) tipoOrientativo = 12;
-  else if (baseOrientativa <= 36000) tipoOrientativo = 14;
-  else if (baseOrientativa <= 45000) tipoOrientativo = 16;
-  else if (baseOrientativa <= 60000) tipoOrientativo = 19;
-  else tipoOrientativo = 22;
+  // 5) Cuota orientativa progresiva
+  let cuota = 0;
+  let restante = baseOrientativa;
 
-  if (hijos >= 1) tipoOrientativo -= 0.8;
-  if (hijos >= 2) tipoOrientativo -= 1.0;
-  if (hijos >= 3) tipoOrientativo -= 1.2;
+  const tramos = [
+    { limite: 12450, tipo: 0.19 },
+    { limite: 7750, tipo: 0.24 },
+    { limite: 15000, tipo: 0.30 },
+    { limite: 24800, tipo: 0.37 },
+    { limite: 240000, tipo: 0.45 },
+    { limite: Infinity, tipo: 0.47 }
+  ];
 
-  tipoOrientativo -= ascendientes * 0.5;
+  for (const tramo of tramos) {
+    if (restante <= 0) break;
+    const aplicable = Math.min(restante, tramo.limite);
+    cuota += aplicable * tramo.tipo;
+    restante -= aplicable;
+  }
 
-  if (discapacidadTrabajador === 1) tipoOrientativo -= 1.5;
-  if (discapacidadTrabajador === 2) tipoOrientativo -= 3.0;
+  // 6) Tipo efectivo sobre bruto anual
+  let tipoOrientativo = brutoAnual > 0 ? (cuota / brutoAnual) * 100 : 0;
 
-  tipoOrientativo -= discapacidadDescendientes * 0.7;
-
-  if (situacionFamiliar === 2) tipoOrientativo -= 0.8;
-  if (movilidad === 1) tipoOrientativo -= 0.5;
-
-  if (tipoContrato === 'temporal') tipoOrientativo += 0.5;
-  if (pagadores > 1) tipoOrientativo += 0.5;
+  // 7) Ajustes suaves para acercarlo mejor a la retención de nómina
+  if (tipoContrato === 'temporal') tipoOrientativo += 0.75;
+  if (tipoContrato === 'formativo') tipoOrientativo -= 1.00;
+  if (jornada === 'parcial') tipoOrientativo -= 0.25;
+  if (pagadores > 1) tipoOrientativo += 0.75;
 
   tipoOrientativo = Math.max(0, Math.min(35, tipoOrientativo));
 
   $('irpfResBrutoAnual').textContent = money(brutoAnual);
-  $('irpfResAjuste').textContent = money(ajuste);
+  $('irpfResAjuste').textContent = money(minimoPersonalFamiliar + cotizacionTrabajador);
   $('irpfResBase').textContent = money(baseOrientativa);
   $('irpfResTipo').textContent = `${tipoOrientativo.toFixed(2)} %`;
 
   $('irpfExplicacion').textContent =
-    `Con una retribución anual prevista de ${money(brutoAnual)}, y aplicando un ajuste orientativo de ${money(ajuste)} por situación personal y familiar, la base orientativa resultante es ${money(baseOrientativa)}. A partir de esa base se obtiene una retención didáctica aproximada del ${tipoOrientativo.toFixed(2)} %. Este resultado es orientativo para clase y no sustituye al cálculo oficial.`;
+    `Con una retribución anual prevista de ${money(brutoAnual)}, una cotización del trabajador aproximada de ${money(cotizacionTrabajador)} y un mínimo/ajuste personal y familiar didáctico de ${money(minimoPersonalFamiliar)}, la base orientativa queda en ${money(baseOrientativa)}. Sobre esa base se aplica una escala progresiva y se obtiene una retención orientativa del ${tipoOrientativo.toFixed(2)} %.`;
 
   return {
     brutoAnual,
-    ajuste,
+    ajuste: minimoPersonalFamiliar + cotizacionTrabajador,
     baseOrientativa,
     tipoOrientativo
   };
